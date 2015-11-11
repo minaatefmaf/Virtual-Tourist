@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class TravelLocationsMapViewController: UIViewController {
+class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var bottomView: UIView!
@@ -21,6 +21,8 @@ class TravelLocationsMapViewController: UIViewController {
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
         self.navigationItem.setRightBarButtonItems([editButton], animated: true)
         
+        // Set the delegate to this view controller
+        self.mapView.delegate = self
     }
 
     func editPins() {
@@ -44,6 +46,26 @@ class TravelLocationsMapViewController: UIViewController {
         // Change the right bar button to "Edit" mode again
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
         self.navigationItem.setRightBarButtonItem(editButton, animated: true)
+    }
+    
+    // MARK: - MKMapViewDelegate
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let reuseId = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView!.animatesDrop = true
+            pinView!.pinTintColor = MKPinAnnotationView.redPinColor()
+        }
+        else {
+            pinView!.annotation = annotation
+        }
+        
+        return pinView
     }
 
 }
