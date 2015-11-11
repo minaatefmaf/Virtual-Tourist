@@ -23,26 +23,25 @@ class TravelLocationsMapViewController: UIViewController {
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     func editPins() {
+        // Animate rising up the botton view
         UIView.animateWithDuration(0.2, animations: {
             self.mapView.frame.origin.y -= self.bottomView.frame.height
             self.bottomView.frame.origin.y -= self.bottomView.frame.height
         })
+        // Change the right bar button to "Done" mode
         let doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneEditingPins")
         self.navigationItem.setRightBarButtonItem(doneButton, animated: true)
         
     }
     
     func doneEditingPins() {
+        // Animate falling down the botton view
         UIView.animateWithDuration(0.2, animations: {
             self.mapView.frame.origin.y += self.bottomView.frame.height
             self.bottomView.frame.origin.y += self.bottomView.frame.height
         })
+        // Change the right bar button to "Edit" mode again
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
         self.navigationItem.setRightBarButtonItem(editButton, animated: true)
     }
