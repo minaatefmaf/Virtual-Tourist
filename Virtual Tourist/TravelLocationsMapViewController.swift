@@ -14,6 +14,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var bottomView: UIView!
     
+    // Add tap recognizer
+    var tapRecognizer: UITapGestureRecognizer? = nil
+    // To know when working on editing mode
+    var editMode = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,11 +26,26 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
         self.navigationItem.setRightBarButtonItems([editButton], animated: true)
         
+        /* Configure tap recognizer */
+        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer?.numberOfTapsRequired = 1
+        
         // Set the delegate to this view controller
         self.mapView.delegate = self
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        addAnotationRecognizer()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        removeAnotationRecognizer()
+    }
 
     func editPins() {
+        // Switch to the editing mode
+        editMode = true
+        
         // Animate rising up the botton view
         UIView.animateWithDuration(0.2, animations: {
             self.mapView.frame.origin.y -= self.bottomView.frame.height
@@ -38,6 +58,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func doneEditingPins() {
+        // Switch back to the original mode
+        editMode = false
+        
         // Animate falling down the botton view
         UIView.animateWithDuration(0.2, animations: {
             self.mapView.frame.origin.y += self.bottomView.frame.height
@@ -66,6 +89,33 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         return pinView
+    }
+    
+    // MARK: - Gesture recognizer convenience
+    
+    func addAnotationRecognizer() {
+        view.addGestureRecognizer(tapRecognizer!)
+    }
+    
+    func removeAnotationRecognizer() {
+        view.removeGestureRecognizer(tapRecognizer!)
+    }
+    
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        if editMode {
+            
+        } else {
+            let tapPostion = recognizer.locationInView(mapView)
+            let coordinate = self.mapView.convertPoint(tapPostion, toCoordinateFromView: self.mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            
+            //var annotations = [MKPointAnnotation]()
+            //annotations.append(annotation)
+            
+            self.mapView.addAnnotation(annotation)
+        }
+        
     }
 
 }
