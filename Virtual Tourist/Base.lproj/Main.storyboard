@@ -40,7 +40,7 @@
                                 <animations/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2W-d8-yzu">
-                                <rect key="frame" x="0.0" y="520" width="600" height="80"/>
+                                <rect key="frame" x="0.0" y="600" width="600" height="80"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap Pins to Delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ic-nV-47e">
                                         <rect key="frame" x="220" y="28" width="161" height="24"/>
@@ -67,7 +67,7 @@
                             <constraint firstItem="v2W-d8-yzu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Taf-4B-nxj"/>
                             <constraint firstItem="GYf-BS-fgR" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="cEa-Ab-4eh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="v2W-d8-yzu" secondAttribute="trailing" constant="-20" id="ckx-rl-4QZ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="v2W-d8-yzu" secondAttribute="bottom" id="jkT-qY-z64"/>
+                            <constraint firstItem="v2W-d8-yzu" firstAttribute="top" secondItem="GYf-BS-fgR" secondAttribute="bottom" id="mJn-HU-hm8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GYf-BS-fgR" secondAttribute="trailing" constant="-20" id="yTx-j7-Yqq"/>
                         </constraints>
                     </view>

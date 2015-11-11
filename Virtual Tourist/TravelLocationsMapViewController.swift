@@ -29,7 +29,22 @@ class TravelLocationsMapViewController: UIViewController {
     }
 
     func editPins() {
+        UIView.animateWithDuration(0.2, animations: {
+            self.mapView.frame.origin.y -= self.bottomView.frame.height
+            self.bottomView.frame.origin.y -= self.bottomView.frame.height
+        })
+        let doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneEditingPins")
+        self.navigationItem.setRightBarButtonItem(doneButton, animated: true)
         
+    }
+    
+    func doneEditingPins() {
+        UIView.animateWithDuration(0.2, animations: {
+            self.mapView.frame.origin.y += self.bottomView.frame.height
+            self.bottomView.frame.origin.y += self.bottomView.frame.height
+        })
+        let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
+        self.navigationItem.setRightBarButtonItem(editButton, animated: true)
     }
 
 }
