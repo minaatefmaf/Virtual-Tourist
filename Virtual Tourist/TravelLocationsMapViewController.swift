@@ -16,8 +16,10 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // Add long press recognizer
     var longPressRecognizer: UILongPressGestureRecognizer? = nil
-    // To know when working on editing mode
+    // Edit mode: when deleting the pins happen
     var editMode = false
+    // To know if the user is still on the same press
+    var longPressIsActive = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,8 +105,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     func handleSingleLongPress(recognizer: UITapGestureRecognizer) {
         if editMode {
-            
-        } else {
+            // TODO: Remove selected pins
+        } else if !longPressIsActive {
             let tapPostion = recognizer.locationInView(mapView)
             let coordinate = self.mapView.convertPoint(tapPostion, toCoordinateFromView: self.mapView)
             let annotation = MKPointAnnotation()
@@ -114,6 +116,15 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             //annotations.append(annotation)
             
             self.mapView.addAnnotation(annotation)
+            
+            
+            // Set longPressIsActive to true so only one annotation is added
+            longPressIsActive = true
+        }
+        
+        // Set longPressIsActive to false after the continuous gesture touch is ended
+        if (recognizer.state == .Ended) {
+            longPressIsActive = false
         }
         
     }
