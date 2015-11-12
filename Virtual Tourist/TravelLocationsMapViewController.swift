@@ -93,6 +93,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         return pinView
     }
     
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        // Navigate to the Photo Album View
+        let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
+        self.navigationController!.pushViewController(photoAlbumController, animated: true)
+    }
+    
     // MARK: - Gesture recognizer convenience
     
     func addAnotationRecognizer() {
