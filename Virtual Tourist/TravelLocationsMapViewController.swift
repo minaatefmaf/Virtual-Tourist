@@ -14,8 +14,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var bottomView: UIView!
     
-    // Add tap recognizer
-    var tapRecognizer: UITapGestureRecognizer? = nil
+    // Add long press recognizer
+    var longPressRecognizer: UILongPressGestureRecognizer? = nil
     // To know when working on editing mode
     var editMode = false
     
@@ -27,8 +27,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         self.navigationItem.setRightBarButtonItems([editButton], animated: true)
         
         /* Configure tap recognizer */
-        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
-        tapRecognizer?.numberOfTapsRequired = 1
+        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "handleSingleLongPress:")
+        longPressRecognizer?.minimumPressDuration = 0.5
         
         // Set the delegate to this view controller
         self.mapView.delegate = self
@@ -94,14 +94,14 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Gesture recognizer convenience
     
     func addAnotationRecognizer() {
-        view.addGestureRecognizer(tapRecognizer!)
+        view.addGestureRecognizer(longPressRecognizer!)
     }
     
     func removeAnotationRecognizer() {
-        view.removeGestureRecognizer(tapRecognizer!)
+        view.removeGestureRecognizer(longPressRecognizer!)
     }
     
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+    func handleSingleLongPress(recognizer: UITapGestureRecognizer) {
         if editMode {
             
         } else {
