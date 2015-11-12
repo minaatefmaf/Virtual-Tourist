@@ -100,6 +100,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         // Navigate to the Photo Album View if in normal mode
         if !editMode {
             let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
+            
+            // Change the back bar button title in the photo album view
+            let backItem = UIBarButtonItem()
+            backItem.title = "OK"
+            navigationItem.backBarButtonItem = backItem
+            
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
         }
     }
