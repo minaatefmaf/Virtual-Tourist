@@ -38,6 +38,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         addAnotationRecognizer()
+        
+        // Remove the previous selected annotaion so it can be reselected
+        self.mapView.selectedAnnotations.removeAll()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -98,7 +101,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
         self.navigationController!.pushViewController(photoAlbumController, animated: true)
     }
-    
+
     // MARK: - Gesture recognizer convenience
     
     func addAnotationRecognizer() {
