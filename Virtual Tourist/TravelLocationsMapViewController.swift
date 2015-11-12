@@ -63,7 +63,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func doneEditingPins() {
-        // Switch back to the original mode
+        // Switch back to the normal mode
         editMode = false
         
         // Animate falling down the botton view
@@ -97,9 +97,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        // Navigate to the Photo Album View
-        let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
-        self.navigationController!.pushViewController(photoAlbumController, animated: true)
+        // Navigate to the Photo Album View if in normal mode
+        if !editMode {
+            let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
+            self.navigationController!.pushViewController(photoAlbumController, animated: true)
+        }
     }
 
     // MARK: - Gesture recognizer convenience
