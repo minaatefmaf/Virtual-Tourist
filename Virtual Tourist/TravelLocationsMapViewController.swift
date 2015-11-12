@@ -28,9 +28,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
         self.navigationItem.setRightBarButtonItems([editButton], animated: true)
         
-        /* Configure tap recognizer */
+        // Configure tap recognizer
         longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "handleSingleLongPress:")
         longPressRecognizer?.minimumPressDuration = 0.5
+        
+        // Restore the last saved region
+        restoreMapRegion()
         
         // Set the delegate to this view controller
         self.mapView.delegate = self
@@ -109,7 +112,52 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
         }
     }
+    
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        // Save the current region
+        saveMapRegion()
+    }
+    
+    // MARK: - Save the map region helpers
+    
+    // A convenient property
+    var filePath : String {
+        let manager = NSFileManager.defaultManager()
+        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        return url.URLByAppendingPathComponent("mapRegionArchive").path!
+    }
 
+    func saveMapRegion() {
+         // Place the "center" and "span" of the map into a dictionary
+        let dictionary = [
+            "latitude" : mapView.region.center.latitude,
+            "longitude" : mapView.region.center.longitude,
+            "latitudeDelta" : mapView.region.span.latitudeDelta,
+            "longitudeDelta" : mapView.region.span.longitudeDelta
+        ]
+        
+        // Archive the dictionary into the filePath
+        NSKeyedArchiver.archiveRootObject(dictionary, toFile: filePath)
+    }
+    
+    func restoreMapRegion() {
+        if let regionDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(filePath) as? [String : AnyObject] {
+            // Restore the center
+            let longitude = regionDictionary["longitude"] as! CLLocationDegrees
+            let latitude = regionDictionary["latitude"] as! CLLocationDegrees
+            let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            
+            // Restore the span
+            let longitudeDelta = regionDictionary["latitudeDelta"] as! CLLocationDegrees
+            let latitudeDelta = regionDictionary["longitudeDelta"] as! CLLocationDegrees
+            let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+            
+            // Restore the region
+            let savedRegion = MKCoordinateRegion(center: center, span: span)
+            mapView.setRegion(savedRegion, animated: false)
+        }
+    }
+    
     // MARK: - Gesture recognizer convenience
     
     func addAnotationRecognizer() {
