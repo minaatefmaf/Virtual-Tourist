@@ -94,10 +94,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="QM6-fU-rFU">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="210"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="fs7-sS-4Lq"/>
+                                    <constraint firstAttribute="height" constant="210" id="fs7-sS-4Lq"/>
                                 </constraints>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ojb-BC-goY">
@@ -106,10 +106,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="1iJ-ak-PzR"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="New Collection"/>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="H7e-jR-3q7">
-                                <rect key="frame" x="0.0" y="150" width="600" height="400"/>
+                                <rect key="frame" x="0.0" y="210" width="600" height="340"/>
                                 <animations/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Oxm-2l-f05">
                                     <size key="itemSize" width="50" height="50"/>
