@@ -245,6 +245,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             annotation.coordinate = coordinate
             self.mapView.addAnnotation(annotation)
             
+            // Save the context
+            CoreDataStackManager.sharedInstance().saveContext()
+            
             // Set longPressIsActive to true so only one annotation is added
             longPressIsActive = true
         }
