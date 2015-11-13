@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
 
@@ -20,6 +21,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     var editMode = false
     // To know if the user is still on the same press
     var longPressIsActive = false
+    // To hold the array of the pins
+    var pins = [Pin]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
         // Restore the last saved region
         restoreMapRegion()
+        
+        // Fetch our previously saved pins
+        pins = fetchAllPins()
+        
+        // Annotate the map with the previously saved pins
+        annotateMapWithPreviouslySavedPins()
         
         // Set the delegate to this view controller
         self.mapView.delegate = self
@@ -79,6 +88,50 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         self.navigationItem.setRightBarButtonItem(editButton, animated: true)
     }
     
+    func annotateMapWithPreviouslySavedPins() {
+        // Create MKPointAnnotation for each dictionary in "locations".
+        var annotations = [MKPointAnnotation]()
+        
+        for pin in pins {
+            
+            // The latitude and longitude are used to create a CLLocationCoordinates2D instance.
+            let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            
+            // Create the annotation
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            
+            // Place the annotation in an array of annotations.
+            annotations.append(annotation)
+        }
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            // Add the annotations to the map.
+            self.mapView.addAnnotations(annotations)
+        }
+
+    }
+    
+    
+    // MARK: - Core Data Convenience.
+    
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
+    
+    func fetchAllPins() -> [Pin] {
+        // Create the Fetch Request
+        let fetchRequest = NSFetchRequest(entityName: "Pin")
+        
+        // Execute the Fetch Request
+        do {
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Pin]
+        } catch _ {
+            return [Pin]()
+        }
+    }
+
+    
     // MARK: - MKMapViewDelegate
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
@@ -121,7 +174,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Save the map region helpers
     
     // A convenient property
-    var filePath : String {
+    var filePath: String {
         let manager = NSFileManager.defaultManager()
         let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
         return url.URLByAppendingPathComponent("mapRegionArchive").path!
@@ -174,14 +227,23 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         } else if !longPressIsActive {
             let tapPostion = recognizer.locationInView(mapView)
             let coordinate = self.mapView.convertPoint(tapPostion, toCoordinateFromView: self.mapView)
+            
+            let dictionary: [String : AnyObject] = [
+                Pin.Keys.Latitude: coordinate.latitude,
+                Pin.Keys.Longitude: coordinate.longitude
+            ]
+            
+            // Create a pin in the shared context
+            let pinToBeAdded = Pin(dictionary: dictionary, context: sharedContext)
+            
+            // -- self note: (I think I'll not need this)
+            // Add to the pins aray
+            self.pins.append(pinToBeAdded)
+            
+            // Add the annotation to the map
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            
-            //var annotations = [MKPointAnnotation]()
-            //annotations.append(annotation)
-            
             self.mapView.addAnnotation(annotation)
-            
             
             // Set longPressIsActive to true so only one annotation is added
             longPressIsActive = true
