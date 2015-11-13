@@ -174,8 +174,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
         } else {
-            // In the edit mode: Remove the pin
-            
+            // In the edit mode: Remove the pin:
             // remove the pin from the map
             let annotationToBeRemoved = view.annotation!
             self.mapView.removeAnnotation(annotationToBeRemoved)
