@@ -15,6 +15,7 @@
 		2E23888E1BF3B0E900ED23A6 /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E23888D1BF3B0E900ED23A6 /* Virtual_TouristTests.swift */; };
 		2E2388991BF3B0E900ED23A6 /* Virtual_TouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2388981BF3B0E900ED23A6 /* Virtual_TouristUITests.swift */; };
 		2E71CB401BF4AC3B0017BDCE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71CB3F1BF4AC3B0017BDCE /* PhotoAlbumViewController.swift */; };
+		2E88D15B1BF600F300BE5034 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E88D15A1BF600F300BE5034 /* CoreDataStackManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2E2388981BF3B0E900ED23A6 /* Virtual_TouristUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristUITests.swift; sourceTree = "<group>"; };
 		2E23889A1BF3B0E900ED23A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2E71CB3F1BF4AC3B0017BDCE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		2E88D15A1BF600F300BE5034 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		2E2388771BF3B0E900ED23A6 /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				2E88D1591BF600D000BE5034 /* Model */,
 				2E2388781BF3B0E900ED23A6 /* AppDelegate.swift */,
 				2E23887A1BF3B0E900ED23A6 /* TravelLocationsMapViewController.swift */,
 				2E71CB3F1BF4AC3B0017BDCE /* PhotoAlbumViewController.swift */,
@@ -126,6 +129,14 @@
 				2E23889A1BF3B0E900ED23A6 /* Info.plist */,
 			);
 			path = "Virtual TouristUITests";
+			sourceTree = "<group>";
+		};
+		2E88D1591BF600D000BE5034 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2E88D15A1BF600F300BE5034 /* CoreDataStackManager.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E23887B1BF3B0E900ED23A6 /* TravelLocationsMapViewController.swift in Sources */,
+				2E88D15B1BF600F300BE5034 /* CoreDataStackManager.swift in Sources */,
 				2E2388791BF3B0E900ED23A6 /* AppDelegate.swift in Sources */,
 				2E71CB401BF4AC3B0017BDCE /* PhotoAlbumViewController.swift in Sources */,
 			);
