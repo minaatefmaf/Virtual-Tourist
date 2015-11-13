@@ -175,6 +175,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
         } else {
             // In the edit mode: Remove the pin
+            
+            // remove the pin from the map
             let annotationToBeRemoved = view.annotation!
             self.mapView.removeAnnotation(annotationToBeRemoved)
             
@@ -245,7 +247,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     func handleSingleLongPress(recognizer: UITapGestureRecognizer) {
         if editMode {
-            // TODO: Remove selected pins
+            // Do nothing here
         } else if !longPressIsActive {
             let tapPostion = recognizer.locationInView(mapView)
             let coordinate = self.mapView.convertPoint(tapPostion, toCoordinateFromView: self.mapView)
