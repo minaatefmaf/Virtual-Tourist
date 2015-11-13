@@ -260,7 +260,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // Create a pin in the shared context
             let pinToBeAdded = Pin(dictionary: dictionary, context: sharedContext)
             
-            // -- self note: (I think I'll not need this)
             // Add to the pins aray
             self.pins.append(pinToBeAdded)
             
