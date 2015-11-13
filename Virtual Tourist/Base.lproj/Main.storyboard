@@ -94,10 +94,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="QM6-fU-rFU">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="210"/>
+                                <rect key="frame" x="0.0" y="44" width="600" height="166"/>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="210" id="fs7-sS-4Lq"/>
+                                    <constraint firstAttribute="height" constant="166" id="fs7-sS-4Lq">
+                                        <variation key="heightClass=compact" constant="138"/>
+                                    </constraint>
                                 </constraints>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ojb-BC-goY">
@@ -139,7 +141,9 @@
                             <constraint firstItem="H7e-jR-3q7" firstAttribute="top" secondItem="QM6-fU-rFU" secondAttribute="bottom" id="46j-kE-ctz"/>
                             <constraint firstItem="QM6-fU-rFU" firstAttribute="leading" secondItem="yjD-ph-e5W" secondAttribute="leadingMargin" constant="-20" id="GMH-Bq-m1x"/>
                             <constraint firstItem="Ojb-BC-goY" firstAttribute="top" secondItem="H7e-jR-3q7" secondAttribute="bottom" id="Zz9-pR-5Gl"/>
-                            <constraint firstItem="QM6-fU-rFU" firstAttribute="top" secondItem="yjD-ph-e5W" secondAttribute="topMargin" id="a4R-1O-bzR"/>
+                            <constraint firstItem="QM6-fU-rFU" firstAttribute="top" secondItem="yjD-ph-e5W" secondAttribute="topMargin" constant="44" id="a4R-1O-bzR">
+                                <variation key="heightClass=compact" constant="32"/>
+                            </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="Ojb-BC-goY" secondAttribute="trailing" constant="-20" id="bA3-Uq-H1F"/>
                             <constraint firstItem="M6O-Dq-LN3" firstAttribute="top" secondItem="Ojb-BC-goY" secondAttribute="bottom" id="cV8-Fx-Zz6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="QM6-fU-rFU" secondAttribute="trailing" constant="-20" id="eTq-5h-hWI"/>
