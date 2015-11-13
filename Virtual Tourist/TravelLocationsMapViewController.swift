@@ -112,6 +112,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
 
     }
     
+    // Search for a specific pin inside an array of pins
     func searchForPin(arrayOfPins: [Pin], coordinate: CLLocationCoordinate2D) -> Pin? {
         for pin in arrayOfPins {
             if pin.latitude == coordinate.latitude {
@@ -167,11 +168,16 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         if !editMode {
             let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
             
+            // Get the pin to be loaded
+            let thePin = searchForPin(pins, coordinate: view.annotation!.coordinate)!
+            photoAlbumController.thePin = thePin
+            
             // Change the back bar button title in the photo album view
             let backItem = UIBarButtonItem()
             backItem.title = "OK"
             navigationItem.backBarButtonItem = backItem
             
+            // Navigate to the photoAlbumViewController
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
         } else {
             // In the edit mode: Remove the pin:

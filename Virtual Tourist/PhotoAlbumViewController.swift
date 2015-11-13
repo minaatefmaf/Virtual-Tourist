@@ -14,5 +14,8 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editingButton: UIButton!
-     
+    
+    // The pin to display (from TravelLocationsMapViewController)
+    var thePin: Pin!
+    
 }
