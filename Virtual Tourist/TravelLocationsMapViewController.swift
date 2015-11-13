@@ -112,6 +112,16 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
 
     }
     
+    func searchForPin(arrayOfPins: [Pin], coordinate: CLLocationCoordinate2D) -> Pin? {
+        for pin in arrayOfPins {
+            if pin.latitude == coordinate.latitude {
+                if pin.longitude == coordinate.longitude {
+                    return pin
+                }
+            }
+        }
+        return nil
+    }
     
     // MARK: - Core Data Convenience.
     
@@ -163,6 +173,18 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             navigationItem.backBarButtonItem = backItem
             
             self.navigationController!.pushViewController(photoAlbumController, animated: true)
+        } else {
+            // In the edit mode: Remove the pin
+            let annotationToBeRemoved = view.annotation!
+            self.mapView.removeAnnotation(annotationToBeRemoved)
+            
+            let pinToBeRemoved = searchForPin(pins, coordinate: annotationToBeRemoved.coordinate)!
+
+            // Remove the pin from the context
+            sharedContext.deleteObject(pinToBeRemoved)
+            
+            // Save the context
+            CoreDataStackManager.sharedInstance().saveContext()
         }
     }
     
