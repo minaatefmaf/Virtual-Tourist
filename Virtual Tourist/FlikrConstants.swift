@@ -46,4 +46,15 @@ extension FlikrClient {
         
     }
     
+    // MARK: - Resources
+    struct Resources {
+    
+    }
+    
+    
+    // MARK: - Keys
+    struct Keys {
+        static let ErrorStatusMessage = "status_message"
+    }
+    
 }
