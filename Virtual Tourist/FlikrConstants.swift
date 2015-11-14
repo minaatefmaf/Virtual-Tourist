@@ -23,7 +23,7 @@ extension FlikrClient {
     
     
     // MARK: - Method Arguments
-    struct MethodsArgguments {
+    struct MethodArguments {
         
         static let METHOD_NAME = "flickr.photos.search"
         static let EXTRAS = "url_m"

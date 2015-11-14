@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E1137331BF7C08D0086BECA /* FlikrConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1137321BF7C08D0086BECA /* FlikrConvenience.swift */; };
 		2E2388791BF3B0E900ED23A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2388781BF3B0E900ED23A6 /* AppDelegate.swift */; };
 		2E23887B1BF3B0E900ED23A6 /* TravelLocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E23887A1BF3B0E900ED23A6 /* TravelLocationsMapViewController.swift */; };
 		2E23887E1BF3B0E900ED23A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E23887C1BF3B0E900ED23A6 /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2E1137321BF7C08D0086BECA /* FlikrConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlikrConvenience.swift; sourceTree = "<group>"; };
 		2E2388751BF3B0E900ED23A6 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E2388781BF3B0E900ED23A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E23887A1BF3B0E900ED23A6 /* TravelLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsMapViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				2E88D1651BF610FC00BE5034 /* FlikrConstants.swift */,
+				2E1137321BF7C08D0086BECA /* FlikrConvenience.swift */,
 				2E88D1631BF610E800BE5034 /* FlikrClient.swift */,
 				2E88D1671BF6111500BE5034 /* ImageCache.swift */,
 			);
@@ -340,6 +343,7 @@
 				2E2388791BF3B0E900ED23A6 /* AppDelegate.swift in Sources */,
 				2E88D16B1BF612FD00BE5034 /* Model.xcdatamodeld in Sources */,
 				2E71CB401BF4AC3B0017BDCE /* PhotoAlbumViewController.swift in Sources */,
+				2E1137331BF7C08D0086BECA /* FlikrConvenience.swift in Sources */,
 				2E88D1641BF610E800BE5034 /* FlikrClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
