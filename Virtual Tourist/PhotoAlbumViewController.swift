@@ -61,8 +61,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         } else if thePin.numberOfAvailablePhotos == 0 {
             // TODO: Display "Pin as no images"
             print("Pin as no images")
-        } else {
-            // TODO: Display the saved photos
         }
     }
     
@@ -176,6 +174,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         
         self.configureCell(cell, photo: photo)
         
+        // Darken the cell a little to highlight its selected state.
         if let _ = selectedIndexes.indexOf(indexPath) {
             cell.photoImageView!.alpha = 0.25
         } else {
@@ -193,6 +192,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         } else {
             selectedIndexes.append(indexPath)
         }
+        
+        // Reload the collection cells to reflect selecting the cell
+        collectionView.reloadData()
         
         // And update the buttom button
         updateBottomButton()
