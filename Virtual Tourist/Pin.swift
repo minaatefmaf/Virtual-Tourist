@@ -39,6 +39,8 @@ class Pin: NSManagedObject{
         // Init the properties from the dictionary.
         latitude = dictionary[Keys.Latitude] as! Double
         longitude = dictionary[Keys.Longitude] as! Double
+        // This -ve number indicates that no attempt (with a successful internet connection) was made in order to download the associate photos)
+        numberOfAvailablePhotos = -1
     }
     
 }
