@@ -15,6 +15,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editingButton: UIButton!
+    @IBOutlet weak var bottomButton: UIButton!
     
     // The pin to display (from TravelLocationsMapViewController)
     var thePin: Pin!
@@ -64,6 +65,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         // Prepare the map view
         mapView.scrollEnabled = false
         mapView.zoomEnabled = false
+    }
+    
+    @IBAction func clickTheBottomButton(sender: UIButton) {
+        
     }
     
     func downloadThePhotos() {

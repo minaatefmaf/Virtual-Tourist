@@ -110,6 +110,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="clickTheBottomButton:" destination="Lrb-sA-pAZ" eventType="touchUpInside" id="y1v-cw-Qkc"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="H7e-jR-3q7">
                                 <rect key="frame" x="0.0" y="210" width="600" height="340"/>
@@ -153,6 +156,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomButton" destination="Ojb-BC-goY" id="w1Q-cc-8D6"/>
                         <outlet property="collectionView" destination="H7e-jR-3q7" id="89b-75-TJn"/>
                         <outlet property="editingButton" destination="Ojb-BC-goY" id="GQy-HV-jju"/>
                         <outlet property="mapView" destination="QM6-fU-rFU" id="hqJ-oZ-fe4"/>
