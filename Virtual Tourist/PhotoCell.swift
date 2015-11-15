@@ -10,7 +10,6 @@ import UIKit
 
 class PhotoCell: TaskCancelingCollectionViewCell {
     
-    @IBOutlet weak var frameImageView: UIImageView!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
