@@ -15,6 +15,8 @@
 		2E2388831BF3B0E900ED23A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E2388811BF3B0E900ED23A6 /* LaunchScreen.storyboard */; };
 		2E23888E1BF3B0E900ED23A6 /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E23888D1BF3B0E900ED23A6 /* Virtual_TouristTests.swift */; };
 		2E2388991BF3B0E900ED23A6 /* Virtual_TouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2388981BF3B0E900ED23A6 /* Virtual_TouristUITests.swift */; };
+		2E25EDB01BF89B5D008315F8 /* TaskCancelingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E25EDAF1BF89B5D008315F8 /* TaskCancelingCollectionViewCell.swift */; };
+		2E25EDB21BF89C04008315F8 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E25EDB11BF89C04008315F8 /* PhotoCell.swift */; };
 		2E71CB401BF4AC3B0017BDCE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E71CB3F1BF4AC3B0017BDCE /* PhotoAlbumViewController.swift */; };
 		2E88D15B1BF600F300BE5034 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E88D15A1BF600F300BE5034 /* CoreDataStackManager.swift */; };
 		2E88D15D1BF6074600BE5034 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E88D15C1BF6074600BE5034 /* Pin.swift */; };
@@ -57,6 +59,8 @@
 		2E2388941BF3B0E900ED23A6 /* Virtual TouristUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Virtual TouristUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E2388981BF3B0E900ED23A6 /* Virtual_TouristUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristUITests.swift; sourceTree = "<group>"; };
 		2E23889A1BF3B0E900ED23A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2E25EDAF1BF89B5D008315F8 /* TaskCancelingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCancelingCollectionViewCell.swift; sourceTree = "<group>"; };
+		2E25EDB11BF89C04008315F8 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		2E71CB3F1BF4AC3B0017BDCE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		2E88D15A1BF600F300BE5034 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		2E88D15C1BF6074600BE5034 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 		2E88D16D1BF6133C00BE5034 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2E25EDAF1BF89B5D008315F8 /* TaskCancelingCollectionViewCell.swift */,
+				2E25EDB11BF89C04008315F8 /* PhotoCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -340,10 +346,12 @@
 				2E88D1681BF6111500BE5034 /* ImageCache.swift in Sources */,
 				2E88D15B1BF600F300BE5034 /* CoreDataStackManager.swift in Sources */,
 				2E88D1661BF610FC00BE5034 /* FlikrConstants.swift in Sources */,
+				2E25EDB21BF89C04008315F8 /* PhotoCell.swift in Sources */,
 				2E2388791BF3B0E900ED23A6 /* AppDelegate.swift in Sources */,
 				2E88D16B1BF612FD00BE5034 /* Model.xcdatamodeld in Sources */,
 				2E71CB401BF4AC3B0017BDCE /* PhotoAlbumViewController.swift in Sources */,
 				2E1137331BF7C08D0086BECA /* FlikrConvenience.swift in Sources */,
+				2E25EDB01BF89B5D008315F8 /* TaskCancelingCollectionViewCell.swift in Sources */,
 				2E88D1641BF610E800BE5034 /* FlikrClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
