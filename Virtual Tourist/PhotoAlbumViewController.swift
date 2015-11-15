@@ -20,6 +20,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     // The pin to display (from TravelLocationsMapViewController)
     var thePin: Pin!
     
+    // TODO: Check if we really need this one
+    // Declaring a normal state vs. a downloading state
+    var downloadingState = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,6 +76,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     }
     
     func downloadThePhotos() {
+        
+        // Disable the bottom button
+        self.bottomButton.enabled = false
+        
+        // Initiate the dowloading process
         FlikrClient.sharedInstance().getThePhotosFromFlikr(thePin.latitude, longitude: thePin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
             
             if success {
@@ -90,6 +99,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
                     photo.pin = self.thePin
                 }
                 CoreDataStackManager.sharedInstance().saveContext()
+                
+                // Enable the bottom button
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.bottomButton.enabled = true
+                }
                 
             } else {
                 // Display an alert with the error for the user
