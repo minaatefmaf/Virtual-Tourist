@@ -75,7 +75,7 @@ class FlikrClient: NSObject {
     }
     
     
-/*    // MARK: - All purpose task method for images
+    // MARK: - All purpose task method for images
     
     func taskForImage(filePath: String, completionHandler: (imageData: NSData?, error: NSError?) ->  Void) -> NSURLSessionTask {
         
@@ -86,8 +86,7 @@ class FlikrClient: NSObject {
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             
             if let error = downloadError {
-                let newError = FlikrClient.errorForData(data, response: response, error: error)
-                completionHandler(imageData: nil, error: newError)
+                completionHandler(imageData: nil, error: error)
             } else {
                 completionHandler(imageData: data, error: nil)
             }
@@ -97,7 +96,7 @@ class FlikrClient: NSObject {
         
         return task
     }
-*/
+
     
     // MARK: - Helpers
     
