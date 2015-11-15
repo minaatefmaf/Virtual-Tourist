@@ -32,6 +32,21 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         configureUI()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        /* If numberOfAvailablePhotos is -ve: no previous attempt was made to download this pin's photos.
+           If numberOfAvailablePhotos == 0: found no photos associated with this pin if the first attempt (with a successful internet connection) was made*/
+        if thePin.numberOfAvailablePhotos < 0 {
+            downloadThePhotos()
+        } else if thePin.numberOfAvailablePhotos == 0 {
+            // TODO: Display "Pin as no images"
+            print("Pin as no images")
+        } else {
+            // TODO: Display the saved photos
+        }
+    }
+    
     func annotateTheLocationOnMap() {
         // Get the location on the map
         let coordinate = CLLocationCoordinate2D(latitude: thePin.latitude, longitude: thePin.longitude)
