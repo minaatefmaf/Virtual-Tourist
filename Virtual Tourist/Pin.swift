@@ -12,12 +12,14 @@ class Pin: NSManagedObject{
     struct Keys {
         static let Latitude = "latitude"
         static let Longitude = "longitude"
+        static let Number_Of_Available_Photos = "numberOfAvailablePhotos"
         static let Photos = "photos"
     }
     
     // Promote these four from simple properties, to Core Data attributes.
     @NSManaged var latitude: Double
     @NSManaged var longitude: Double
+    @NSManaged var numberOfAvailablePhotos: Int
     @NSManaged var photos: [Photo]
     
     // The standard Core Data init method.
