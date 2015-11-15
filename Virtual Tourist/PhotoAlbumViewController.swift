@@ -195,7 +195,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         
         var imageForPhoto = UIImage(named: "photoPlaceholder")
         
-        //cell.photoImageView!.image = nil
+        cell.photoImageView!.image = nil
         
         if photo.photoImage != nil {
             imageForPhoto = photo.photoImage
@@ -209,7 +209,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             let task = FlikrClient.sharedInstance().taskForImage(photo.photoPath!) { imageData, error in
                 
                 if let error = error {
-                    // print("Image download error: \(error.localizedDescription)")
+                    print("Image download error: \(error.localizedDescription)")
                 }
                 
                 if let data = imageData {
@@ -227,7 +227,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                 }
             }
             
-            // This is the custom property on this cell.
+            // This should cancel the task if the cell is reused
             cell.taskToCancelifCellIsReused = task
         }
         
