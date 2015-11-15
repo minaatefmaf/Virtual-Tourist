@@ -111,7 +111,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="New Collection"/>
                                 <connections>
-                                    <action selector="clickTheBottomButton:" destination="Lrb-sA-pAZ" eventType="touchUpInside" id="y1v-cw-Qkc"/>
+                                    <action selector="clickTheBottomButton:" destination="Lrb-sA-pAZ" eventType="touchUpInside" id="55y-Ei-XaA"/>
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="H7e-jR-3q7">

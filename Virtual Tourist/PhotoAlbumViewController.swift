@@ -28,10 +28,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     var deletedIndexPaths: [NSIndexPath]!
     var updatedIndexPaths: [NSIndexPath]!
     
-    // TODO: Check if we really need this one
-    // Declaring a normal state vs. a downloading state
-    var downloadingState = false
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,10 +99,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         // Prepare the map view
         mapView.scrollEnabled = false
         mapView.zoomEnabled = false
-    }
-    
-    @IBAction func clickTheBottomButton(sender: UIButton) {
-        
     }
     
     func downloadThePhotos() {
@@ -185,9 +177,27 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         
         self.configureCell(cell, photo: photo)
         
+        if let _ = selectedIndexes.indexOf(indexPath) {
+            cell.photoImageView!.alpha = 0.25
+        } else {
+            cell.photoImageView!.alpha = 1.0
+        }
+        
         return cell
     }
 
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        // Whenever a cell is tapped we will toggle its presence in the selectedIndexes array
+        if let index = selectedIndexes.indexOf(indexPath) {
+            selectedIndexes.removeAtIndex(index)
+        } else {
+            selectedIndexes.append(indexPath)
+        }
+        
+        // And update the buttom button
+        updateBottomButton()
+    }
     
     // MARK: - Configure Cell
     
@@ -237,7 +247,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         }
         
         cell.photoImageView!.image = imageForPhoto
-        
     }
     
     
@@ -275,8 +284,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         insertedIndexPaths = [NSIndexPath]()
         deletedIndexPaths = [NSIndexPath]()
         updatedIndexPaths = [NSIndexPath]()
-        
-        print("in controllerWillChangeContent")
     }
     
     // The second method may be called multiple times, once for each Photo object that is added, deleted, or changed.
@@ -287,37 +294,28 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             
         case .Insert:
             print("Insert an item")
-            // Here we are noting that a new Color instance has been added to Core Data. We remember its index path
-            // so that we can add a cell in "controllerDidChangeContent". Note that the "newIndexPath" parameter has
-            // the index path that we want in this case
+            /* Here we are noting that a new Photo instance has been added to Core Data. We remember its index path so that we can add a cell in "controllerDidChangeContent". Note that the "newIndexPath" parameter has the index path that we want in this case. */
             insertedIndexPaths.append(newIndexPath!)
             break
         case .Delete:
             print("Delete an item")
-            // Here we are noting that a Color instance has been deleted from Core Data. We keep remember its index path
-            // so that we can remove the corresponding cell in "controllerDidChangeContent". The "indexPath" parameter has
-            // value that we want in this case.
+            /* Here we are noting that a Photo instance has been deleted from Core Data. We keep remember its index path so that we can remove the corresponding cell in "controllerDidChangeContent". The "indexPath" parameter has value that we want in this case. */
             deletedIndexPaths.append(indexPath!)
             break
         case .Update:
             print("Update an item.")
-            // We don't expect Color instances to change after they are created. But Core Data would
-            // notify us of changes if any occured. This can be useful if you want to respond to changes
-            // that come about after data is downloaded. For example, when an images is downloaded from
-            // Flickr in the Virtual Tourist app
+            /* Use this to update the photos when downloaded */
             updatedIndexPaths.append(indexPath!)
             break
         case .Move:
-            print("Move an item. We don't expect to see this in this app.")
+            // Do nothing
             break
         default:
             break
         }
     }
     
-    // This method is invoked after all of the changed in the current batch have been collected
-    // into the three index path arrays (insert, delete, and upate). We now need to loop through the
-    // arrays and perform the changes.
+    /* This method is invoked after all of the changed in the current batch have been collected into the three index path arrays (insert, delete, and upate). We now need to loop through the arrays and perform the changes. */
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         
         print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
@@ -338,5 +336,61 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             
             }, completion: nil)
     }
+    
+    
+    
+    // MARK: - Helper functions
+    
+    @IBAction func clickTheBottomButton(sender: UIButton) {
+        
+        if selectedIndexes.isEmpty {
+            reloadOtherPhotos()
+        } else {
+            deleteSelectedPhotos()
+        }
+        
+        updateBottomButton()
+        
+    }
+    
+    
+    func reloadOtherPhotos() {
+        // TODO: delete the underlying files
+        // Delete all the photos
+        for photo in fetchedResultsController.fetchedObjects as! [Photo] {
+            sharedContext.deleteObject(photo)
+        }
+        
+        // Download another set of photos
+        if thePin.numberOfAvailablePhotos <= 21 {
+            // TODO: Display "Pin as no other images"
+            print("Pin as no other images")
+        } else {
+            downloadThePhotos()
+        }
+    }
+    
+    func deleteSelectedPhotos() {
+        var photosToDelete = [Photo]()
+        
+        for indexPath in selectedIndexes {
+            photosToDelete.append(fetchedResultsController.objectAtIndexPath(indexPath) as! Photo)
+        }
+        
+        for photo in photosToDelete {
+            sharedContext.deleteObject(photo)
+        }
+        
+        selectedIndexes = [NSIndexPath]()
+    }
+    
+    func updateBottomButton() {
+        if selectedIndexes.count > 0 {
+            bottomButton.setTitle("Remove Selected Colors", forState: UIControlState.Normal)
+        } else {
+            bottomButton.setTitle("New Collection", forState: UIControlState.Normal)
+        }
+    }
+
     
 }
