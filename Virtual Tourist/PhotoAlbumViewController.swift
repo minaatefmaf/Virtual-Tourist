@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import MapKit
 
 class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
@@ -49,4 +50,57 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         mapView.scrollEnabled = false
         mapView.zoomEnabled = false
     }
+    
+    func downloadThePhotos() {
+        FlikrClient.sharedInstance().getThePhotosFromFlikr(thePin.latitude, longitude: thePin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
+            
+            if success {
+                
+                // Save the numberOfAvailablePhotos to the Pin
+                if let numberOfAvailablePhotos = numberOfAvailablePhotos{
+                    self.thePin.numberOfAvailablePhotos = numberOfAvailablePhotos
+                }
+                
+                // Save the urls into the photos array associated with the pin
+                for url in arrayOfURLs {
+                    let dictionary: [String : AnyObject] = [
+                        Photo.Keys.PhotoPath: url
+                    ]
+                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                    photo.pin = self.thePin
+                }
+                CoreDataStackManager.sharedInstance().saveContext()
+                
+            } else {
+                // Display an alert with the error for the user
+                self.displayError(errorString)
+                dispatch_async(dispatch_get_main_queue()) {
+                    // TODO: Do stuff here regards to the UI
+                }
+                
+            }
+            
+        }
+    }
+    
+    func displayError(errorString: String?) {
+        if let errorString = errorString {
+            // Prepare the Alert view controller with the error message to display
+            let alert = UIAlertController(title: "", message: errorString, preferredStyle: .Alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+            alert.addAction(dismissAction)
+            dispatch_async(dispatch_get_main_queue(), {
+                // Display the Alert view controller
+                self.presentViewController (alert, animated: true, completion: nil)
+            })
+        }
+    }
+    
+    
+    // MARK: - Core Data Convenience.
+    
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
+    
 }
