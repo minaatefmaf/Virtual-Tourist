@@ -196,6 +196,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         var imageForPhoto = UIImage(named: "photoPlaceholder")
         
         cell.photoImageView!.image = nil
+        cell.associatedURL = photo.photoPath!
         
         if photo.photoImage != nil {
             imageForPhoto = photo.photoImage
@@ -208,22 +209,26 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             // Start the task that will eventually download the image
             let task = FlikrClient.sharedInstance().taskForImage(photo.photoPath!) { imageData, error in
                 
-                if let error = error {
-                    print("Image download error: \(error.localizedDescription)")
+                if let _ = error {
+                    //print("Image download error: \(error.localizedDescription)")
                 }
                 
                 if let data = imageData {
                     // Create the image
                     let image = UIImage(data: data)
                     
-                    // update the model, so that the information gets cashed
-                    photo.photoImage = image
-                    
-                    // update the cell later, on the main thread
-                    dispatch_async(dispatch_get_main_queue()) {
-                        cell.activityIndicator.stopAnimating()
-                        cell.photoImageView!.image = image
+                    // Check if this is the same image used for this specific cell!
+                    if cell.associatedURL == photo.photoPath!{
+                        // Update the model, so that the information gets cashed
+                        photo.photoImage = image
+                        
+                        // Update the cell later, on the main thread
+                        dispatch_async(dispatch_get_main_queue()) {
+                            cell.activityIndicator.stopAnimating()
+                            cell.photoImageView!.image = image
+                        }
                     }
+                    
                 }
             }
             
