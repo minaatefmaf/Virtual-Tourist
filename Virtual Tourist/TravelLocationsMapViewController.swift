@@ -347,7 +347,6 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                 // Try to prefetch the photos for this pin
                 self.prefetchThePhotos(newPin)
                 
-                print("The pin's data has been successfully downloades")
             }
             
         }
@@ -355,6 +354,20 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func prefetchThePhotos(newPin: Pin) {
+        
+        for photo in newPin.photos {
+            
+            // Start the task that will eventually download the image
+            FlikrClient.sharedInstance().taskForImage(photo.photoPath!) { imageData, error in
+                
+                if let data = imageData {
+                    // Create the image
+                    photo.photoImage = UIImage(data: data)
+                }
+                
+            }
+            
+        }
         
     }
 
