@@ -99,6 +99,10 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
             let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+      
+            // Let the user know that that means
+            displayMessage("Instantaneously downloading feature: Images will be pre-fetched once the pin is dropped if there is an internet connection available.")
+
         } else {
             // Toggle the instantaneouslyDownloadingFeature
             instantaneouslyDownloadingFeature = false
@@ -110,6 +114,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
             let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+            
+            // Let the user know that that means
+            displayMessage("N/A: The instantaneously downloading feature is disabled.")
         }
         
     }
