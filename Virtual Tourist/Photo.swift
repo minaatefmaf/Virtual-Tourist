@@ -52,5 +52,8 @@ class Photo: NSManagedObject {
         }
     }
 
+    override func prepareForDeletion() {
+        FlikrClient.Caches.imageCache.deleteImage(withIdentifier: photoNameOnDisc!)
+    }
     
 }

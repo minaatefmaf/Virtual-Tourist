@@ -62,6 +62,21 @@ class ImageCache {
         data.writeToFile(path, atomically: true)
     }
     
+    // Mark: - Deleting images
+    
+    func deleteImage(withIdentifier identifier: String) {
+        let path = pathForIdentifier(identifier)
+
+        // Remove images from the cache
+        inMemoryCache.removeObjectForKey(path)
+        
+        // And from memory
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(path)
+        } catch let error as NSError {
+            print("Error trying to delete the photo: \(error)")
+        }
+    }
     
     // MARK: - Helper
     
