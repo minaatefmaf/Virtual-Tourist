@@ -193,8 +193,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             selectedIndexes.append(indexPath)
         }
         
-        // Reload the collection cells to reflect selecting the cell
-        collectionView.reloadData()
+        // Reload the selected cell to reflect the action of selecting it
+        UIView.performWithoutAnimation({
+            collectionView.reloadItemsAtIndexPaths([indexPath])
+        })
         
         // And update the buttom button
         updateBottomButton()

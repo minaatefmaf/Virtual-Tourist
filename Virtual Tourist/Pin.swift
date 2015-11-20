@@ -16,7 +16,7 @@ class Pin: NSManagedObject{
         static let Photos = "photos"
     }
     
-    // Promote these four from simple properties, to Core Data attributes.
+    // Promote the simple properties to Core Data attributes.
     @NSManaged var latitude: Double
     @NSManaged var longitude: Double
     @NSManaged var numberOfAvailablePhotos: Int
