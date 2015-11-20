@@ -21,15 +21,18 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     var editMode = false
     // To know if the user is still on the same press
     var longPressIsActive = false
+    // To know the toggle state
+    var instantaneouslyDownloadingFeature = false
     // To hold the array of the pins
     var pins = [Pin]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add the right bar button
+        // Add the right bar buttons
         let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-        self.navigationItem.setRightBarButtonItems([editButton], animated: true)
+        let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+        self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
         
         // Configure tap recognizer
         longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "handleSingleLongPress:")
@@ -71,6 +74,28 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         // Change the right bar button to "Done" mode
         let doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneEditingPins")
         self.navigationItem.setRightBarButtonItem(doneButton, animated: true)
+        
+    }
+    
+    func toggleTheInstantaneouslyDownloadingFeature() {
+        
+        if instantaneouslyDownloadingFeature == false {
+            // Toggle the instantaneouslyDownloadingFeature
+            instantaneouslyDownloadingFeature = true
+            
+            // Change the right bar buttons
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+        } else {
+            // Toggle the instantaneouslyDownloadingFeature
+            instantaneouslyDownloadingFeature = false
+            
+            // Change the right bar buttons
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+        }
         
     }
     
@@ -291,8 +316,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // Set longPressIsActive to true so only one annotation is added
             longPressIsActive = true
             
-            // Try to pre-fetch the pin's photos if there's an available internet connection
-            if reachabilityStatus != kNOTREACHABLE {
+            // Try to pre-fetch the pin's photos if there's an available internet connection & we're in the instantaneously downloading mode
+            // No error will be presented for the user here if there's no internet connection available at the moment
+            if reachabilityStatus != kNOTREACHABLE && instantaneouslyDownloadingFeature == true {
                 downloadThePhotos(pinToBeAdded)
             }
         }
