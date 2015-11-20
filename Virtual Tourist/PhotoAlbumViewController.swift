@@ -145,10 +145,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             } else {
                 // Display an alert with the error for the user
                 self.displayError(errorString)
-                dispatch_async(dispatch_get_main_queue()) {
-                    // TODO: Do stuff here regards to the UI
-                }
-                
             }
             
         }
@@ -372,7 +368,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             displayMessage("The Internet connection appears to be offline.")
         } else if thePin.numberOfAvailablePhotos >= 0 && thePin.numberOfAvailablePhotos <= 21 { // The app tries to download the available photos associated with this pin in the past and only a set of < 21 photos were available; There's no more photos to download
             // Display a message that there are no other photos to download for this pin
-            displayError("This pin has no other images.")
+            displayMessage("This pin has no other images.")
         } else {
             
             // Delete all the photos

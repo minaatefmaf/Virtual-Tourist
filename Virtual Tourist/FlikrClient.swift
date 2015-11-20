@@ -61,7 +61,6 @@ class FlikrClient: NSObject {
             guard let data = data else {
                 let userInfo = [NSLocalizedDescriptionKey: "No data was returned by the request!"]
                 completionHandler(result: nil, error: NSError(domain: "FlikrJSONWithCompletionHandler", code: 1, userInfo: userInfo))
-                print("No data was returned by the request!")
                 return
             }
             

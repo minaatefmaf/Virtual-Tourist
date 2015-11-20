@@ -67,7 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Reachability helper functions
     
     func reachabilityChanged(notification: NSNotification) {
-        print("Reachability status changed...")
         reachability = notification.object as? Reachability
         self.statusChangedWithReachability(reachability!)
     }

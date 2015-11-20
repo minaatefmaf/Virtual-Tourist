@@ -14,7 +14,6 @@ extension FlikrClient {
     
     typealias CompletionHander = (success: Bool, numberOfAvailablePhotos: Int?, arrayOfURLs: [String], errorString: String?) -> Void
     
-    // TODO: Change the complition handler
     func getThePhotosFromFlikr(latitude: Double, longitude: Double, completionHandler: CompletionHander) {
         
         // Specify parameters, methods
@@ -118,11 +117,9 @@ extension FlikrClient {
                 
                 if totalPhotosVal <= 21 {
                     arrayOfURLs = self.getAllPhotosWeHave(photosArray)
-                    // TODO: Return the array of the urls in compation handler
                     completionHandler(success: true, numberOfAvailablePhotos: totalPhotosVal, arrayOfURLs: arrayOfURLs, errorString: nil)
                 } else {
                     arrayOfURLs = self.getRandom21Photos(photosArray)
-                    // TODO: Return the array of the urls in compation handler
                     completionHandler(success: true, numberOfAvailablePhotos: totalPhotosVal, arrayOfURLs: arrayOfURLs, errorString: nil)
                 }
                 
