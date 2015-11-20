@@ -166,19 +166,28 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         // Navigate to the Photo Album View if in normal mode
         if !editMode {
-            let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
             
             // Get the pin to be loaded
             let thePin = searchForPin(pins, coordinate: view.annotation!.coordinate)!
-            photoAlbumController.thePin = thePin
             
-            // Change the back bar button title in the photo album view
-            let backItem = UIBarButtonItem()
-            backItem.title = "OK"
-            navigationItem.backBarButtonItem = backItem
+            // First check for the availability of an internet connection if the current pin needs to download photos (its numberOfAvailablePhotos is a negative number meaning no previous "successful" attempt to download the pin's photos has been made yet)
+            if thePin.numberOfAvailablePhotos < 0 && reachabilityStatus == kNOTREACHABLE {
+                displayMessage("The Internet connection appears to be offline.")
+            } else {
+                let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
+                
+                // Get the pin to be loaded
+                photoAlbumController.thePin = thePin
+                
+                // Change the back bar button title in the photo album view
+                let backItem = UIBarButtonItem()
+                backItem.title = "OK"
+                navigationItem.backBarButtonItem = backItem
+                
+                // Navigate to the photoAlbumViewController
+                self.navigationController!.pushViewController(photoAlbumController, animated: true)
+            }
             
-            // Navigate to the photoAlbumViewController
-            self.navigationController!.pushViewController(photoAlbumController, animated: true)
         } else {
             // In the edit mode: Remove the pin:
             // remove the pin from the map
@@ -285,6 +294,19 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             longPressIsActive = false
         }
         
+    }
+    
+    // Mark: - Helper methods
+    
+    func displayMessage(messageString: String) {
+        // Prepare the Alert view controller with the error message to display
+        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .Alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+        alert.addAction(dismissAction)
+        dispatch_async(dispatch_get_main_queue(), {
+            // Display the Alert view controller
+            self.presentViewController (alert, animated: true, completion: nil)
+        })
     }
 
 }
