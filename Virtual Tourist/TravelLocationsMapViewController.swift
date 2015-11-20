@@ -173,6 +173,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // First check for the availability of an internet connection if the current pin needs to download photos (its numberOfAvailablePhotos is a negative number meaning no previous "successful" attempt to download the pin's photos has been made yet)
             if thePin.numberOfAvailablePhotos < 0 && reachabilityStatus == kNOTREACHABLE {
                 displayMessage("The Internet connection appears to be offline.")
+                
+                // Remove the previous selected annotaion so it can be reselected
+                self.mapView.selectedAnnotations.removeAll()
             } else {
                 let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
                 
@@ -287,6 +290,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             
             // Set longPressIsActive to true so only one annotation is added
             longPressIsActive = true
+            
+            // Try to pre-fetch the pin's photos if there's an available internet connection
+            if reachabilityStatus != kNOTREACHABLE {
+                downloadThePhotos(pinToBeAdded)
+            }
         }
         
         // Set longPressIsActive to false after the continuous gesture touch is ended
@@ -307,6 +315,47 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // Display the Alert view controller
             self.presentViewController (alert, animated: true, completion: nil)
         })
+    }
+    
+    func downloadThePhotos(newPin: Pin) {
+        
+        // Initiate the dowloading process
+        FlikrClient.sharedInstance().getThePhotosFromFlikr(newPin.latitude, longitude: newPin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
+            
+            if success {
+                
+                // Save the numberOfAvailablePhotos to the Pin
+                if let numberOfAvailablePhotos = numberOfAvailablePhotos{
+                    newPin.numberOfAvailablePhotos = numberOfAvailablePhotos
+                }
+                
+                // Save the urls into the photos array associated with the pin
+                for url in arrayOfURLs {
+                    
+                    // Extract the last component of the url to be the file name on disc
+                    let fileNameOnDisc = NSURL(string: url)?.lastPathComponent
+                    
+                    let dictionary: [String : AnyObject] = [
+                        Photo.Keys.PhotoPath: url,
+                        Photo.Keys.PhotoNameOnDisc: fileNameOnDisc!
+                    ]
+                    let photo = Photo(dictionary: dictionary, context: self.sharedContext)
+                    photo.pin = newPin
+                }
+                CoreDataStackManager.sharedInstance().saveContext()
+                
+                // Try to prefetch the photos for this pin
+                self.prefetchThePhotos(newPin)
+                
+                print("The pin's data has been successfully downloades")
+            }
+            
+        }
+        
+    }
+    
+    func prefetchThePhotos(newPin: Pin) {
+        
     }
 
 }
