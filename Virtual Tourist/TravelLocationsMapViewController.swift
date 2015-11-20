@@ -29,11 +29,20 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add the right bar buttons
-        let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-        let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
-        self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+        // Restore the last toggle state
+        restoreToggleState()
         
+        // Add the right bar buttons
+        if instantaneouslyDownloadingFeature == false {
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+        } else {
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
+        }
+
         // Configure tap recognizer
         longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "handleSingleLongPress:")
         longPressRecognizer?.minimumPressDuration = 0.5
@@ -83,6 +92,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // Toggle the instantaneouslyDownloadingFeature
             instantaneouslyDownloadingFeature = true
             
+            // Save the new toggle state to the archive
+            saveToggleState(instantaneouslyDownloadingFeature)
+            
             // Change the right bar buttons
             let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
             let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
@@ -90,6 +102,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         } else {
             // Toggle the instantaneouslyDownloadingFeature
             instantaneouslyDownloadingFeature = false
+            
+            // Save the new toggle state to the archive
+            saveToggleState(instantaneouslyDownloadingFeature)
             
             // Change the right bar buttons
             let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
@@ -240,7 +255,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Save the map region helpers
     
     // A convenient property
-    var filePath: String {
+    var mapFilePath: String {
         let manager = NSFileManager.defaultManager()
         let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
         return url.URLByAppendingPathComponent("mapRegionArchive").path!
@@ -256,11 +271,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         ]
         
         // Archive the dictionary into the filePath
-        NSKeyedArchiver.archiveRootObject(dictionary, toFile: filePath)
+        NSKeyedArchiver.archiveRootObject(dictionary, toFile: mapFilePath)
     }
     
     func restoreMapRegion() {
-        if let regionDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(filePath) as? [String : AnyObject] {
+        if let regionDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(mapFilePath) as? [String : AnyObject] {
             // Restore the center
             let longitude = regionDictionary["longitude"] as! CLLocationDegrees
             let latitude = regionDictionary["latitude"] as! CLLocationDegrees
@@ -274,6 +289,32 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             // Restore the region
             let savedRegion = MKCoordinateRegion(center: center, span: span)
             mapView.setRegion(savedRegion, animated: false)
+        }
+    }
+
+    
+    // MARK: - Save the instantaneously downloading feature helpers
+
+    // A convenient property
+    var toggleFilePath: String {
+        let manager = NSFileManager.defaultManager()
+        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        return url.URLByAppendingPathComponent("toggleStateArchive").path!
+    }
+    
+    func saveToggleState(toggleState: Bool) {
+        // Place the toggle state into a dictionary
+        let dictionary = [
+            "toggleState": toggleState
+        ]
+        
+        // Archive the dictionary into the filePath
+        NSKeyedArchiver.archiveRootObject(dictionary, toFile: toggleFilePath)
+    }
+    
+    func restoreToggleState() {
+        if let toggleStateDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(toggleFilePath) as? [String : AnyObject] {
+            instantaneouslyDownloadingFeature = toggleStateDictionary["toggleState"] as! Bool
         }
     }
     
