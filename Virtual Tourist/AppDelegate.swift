@@ -8,14 +8,34 @@
 
 import UIKit
 
+// Use to check for the avaialbility of an internet connection
+let kREACHABLEWITHWIFI = "ReachableWithWIFI"
+let kNOTREACHABLE = "NotReachable"
+let kREACHABlEWITHWWAN = "ReachableWithWWAN"
+
+var reachability: Reachability?
+var reachabilityStatus = kREACHABLEWITHWIFI
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var internetReach: Reachability?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Register to get notified when network chenges
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityChanged:", name: kReachabilityChangedNotification, object: nil)
+        
+        internetReach = Reachability.reachabilityForInternetConnection()
+        // Start listening to the reachability notifications
+        internetReach?.startNotifier()
+        
+        if internetReach != nil {
+            self.statusChangedWithReachability(internetReach!)
+        }
+        
         return true
     }
 
@@ -39,8 +59,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Unregister from the "reachability did changed" notification
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kReachabilityChangedNotification, object: nil)
     }
 
-
+    // MARK: - Reachability helper functions
+    
+    func reachabilityChanged(notification: NSNotification) {
+        print("Reachability status changed...")
+        reachability = notification.object as? Reachability
+        self.statusChangedWithReachability(reachability!)
+    }
+    
+    func statusChangedWithReachability(currentReachabilityStatus: Reachability) {
+        // NotReachable = 0, ReachableViaWiFi = 1, ReachableViaWWAN = 2
+        let networkStatus: NetworkStatus = currentReachabilityStatus.currentReachabilityStatus()
+        
+        // Change the reachability status whenever the network is changed
+        if networkStatus.rawValue == NotReachable.rawValue {
+            reachabilityStatus = kNOTREACHABLE
+        } else if networkStatus.rawValue == ReachableViaWiFi.rawValue {
+            reachabilityStatus = kREACHABLEWITHWIFI
+        } else if networkStatus.rawValue == ReachableViaWWAN.rawValue {
+            reachabilityStatus = kREACHABlEWITHWWAN
+        }
+        
+    }
+    
 }
 
