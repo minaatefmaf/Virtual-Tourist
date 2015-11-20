@@ -164,11 +164,19 @@
                                     <outlet property="delegate" destination="Lrb-sA-pAZ" id="T3p-O5-0Xq"/>
                                 </connections>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This pin has no images." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6WC-k7-i6R" userLabel="No Pins Label">
+                                <rect key="frame" x="194.5" y="288" width="211.5" height="24"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="H7e-jR-3q7" firstAttribute="top" secondItem="QM6-fU-rFU" secondAttribute="bottom" id="46j-kE-ctz"/>
+                            <constraint firstItem="6WC-k7-i6R" firstAttribute="centerY" secondItem="yjD-ph-e5W" secondAttribute="centerY" id="54l-7H-ErV"/>
                             <constraint firstItem="QM6-fU-rFU" firstAttribute="leading" secondItem="yjD-ph-e5W" secondAttribute="leadingMargin" constant="-20" id="GMH-Bq-m1x"/>
                             <constraint firstItem="Ojb-BC-goY" firstAttribute="top" secondItem="H7e-jR-3q7" secondAttribute="bottom" id="Zz9-pR-5Gl"/>
                             <constraint firstItem="QM6-fU-rFU" firstAttribute="top" secondItem="yjD-ph-e5W" secondAttribute="topMargin" constant="44" id="a4R-1O-bzR">
@@ -180,6 +188,7 @@
                             <constraint firstItem="Ojb-BC-goY" firstAttribute="leading" secondItem="yjD-ph-e5W" secondAttribute="leadingMargin" constant="-20" id="ftL-cO-oes"/>
                             <constraint firstAttribute="trailingMargin" secondItem="H7e-jR-3q7" secondAttribute="trailing" constant="-20" id="nwt-iq-md9"/>
                             <constraint firstItem="H7e-jR-3q7" firstAttribute="leading" secondItem="yjD-ph-e5W" secondAttribute="leadingMargin" constant="-20" id="qOw-d6-21v"/>
+                            <constraint firstItem="6WC-k7-i6R" firstAttribute="centerX" secondItem="yjD-ph-e5W" secondAttribute="centerX" id="xFu-0d-2Gb"/>
                         </constraints>
                     </view>
                     <connections>
@@ -187,6 +196,7 @@
                         <outlet property="collectionView" destination="H7e-jR-3q7" id="89b-75-TJn"/>
                         <outlet property="editingButton" destination="Ojb-BC-goY" id="GQy-HV-jju"/>
                         <outlet property="mapView" destination="QM6-fU-rFU" id="hqJ-oZ-fe4"/>
+                        <outlet property="noPinsLabel" destination="6WC-k7-i6R" id="FTO-24-t6R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CLg-r3-5Ac" userLabel="First Responder" sceneMemberID="firstResponder"/>

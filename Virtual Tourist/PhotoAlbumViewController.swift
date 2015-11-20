@@ -16,6 +16,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var editingButton: UIButton!
     @IBOutlet weak var bottomButton: UIButton!
+    @IBOutlet weak var noPinsLabel: UILabel!
     
     // The pin to display (from TravelLocationsMapViewController)
     var thePin: Pin!
@@ -59,8 +60,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         if thePin.numberOfAvailablePhotos < 0 {
             downloadThePhotos()
         } else if thePin.numberOfAvailablePhotos == 0 {
-            // TODO: Display "Pin as no images"
-            print("Pin as no images")
+            noPinsLabel.hidden = false
         }
     }
     
@@ -97,6 +97,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         // Prepare the map view
         mapView.scrollEnabled = false
         mapView.zoomEnabled = false
+        
+        // Hide the noPinsLabel
+        noPinsLabel.hidden = true
     }
     
     func downloadThePhotos() {
@@ -129,9 +132,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                 }
                 CoreDataStackManager.sharedInstance().saveContext()
                 
-                // Enable the bottom button
                 dispatch_async(dispatch_get_main_queue()) {
+                    // Enable the bottom button
                     self.bottomButton.enabled = true
+                    
+                    // Display the noPinsLabel if this pin has no photos available
+                    if numberOfAvailablePhotos == 0 {
+                        self.noPinsLabel.hidden = false
+                    }
                 }
                 
             } else {
@@ -358,18 +366,23 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     
     func reloadOtherPhotos() {
-        // TODO: delete the underlying files
-        // Delete all the photos
-        for photo in fetchedResultsController.fetchedObjects as! [Photo] {
-            sharedContext.deleteObject(photo)
-        }
         
-        // Download another set of photos
-        if thePin.numberOfAvailablePhotos <= 21 {
-            // TODO: Display "Pin as no other images"
-            print("Pin as no other images")
+        // First check for the availability of an internet connection
+        if reachabilityStatus == kNOTREACHABLE {
+            displayMessage("The Internet connection appears to be offline.")
+        } else if thePin.numberOfAvailablePhotos >= 0 && thePin.numberOfAvailablePhotos <= 21 { // The app tries to download the available photos associated with this pin in the past and only a set of < 21 photos were available; There's no more photos to download
+            // Display a message that there are no other photos to download for this pin
+            displayError("This pin has no other images.")
         } else {
+            
+            // Delete all the photos
+            for photo in fetchedResultsController.fetchedObjects as! [Photo] {
+                sharedContext.deleteObject(photo)
+            }
+            
+            // Download another set of photos
             downloadThePhotos()
+
         }
     }
     
@@ -395,6 +408,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         } else {
             bottomButton.setTitle("New Collection", forState: UIControlState.Normal)
         }
+    }
+    
+    func displayMessage(messageString: String) {
+        // Prepare the Alert view controller with the error message to display
+        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .Alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+        alert.addAction(dismissAction)
+        dispatch_async(dispatch_get_main_queue(), {
+            // Display the Alert view controller
+            self.presentViewController (alert, animated: true, completion: nil)
+        })
     }
 
 }

@@ -296,7 +296,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    // Mark: - Helper methods
+    // Mark: - Helper functions
     
     func displayMessage(messageString: String) {
         // Prepare the Alert view controller with the error message to display
