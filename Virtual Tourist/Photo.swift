@@ -13,10 +13,12 @@ class Photo: NSManagedObject {
     
     struct Keys {
         static let PhotoPath = "photo_path"
+        static let PhotoNameOnDisc = "photo_name_on_disc"
     }
     
     // Promote the simple properties to Core Data attributes.
     @NSManaged var photoPath: String?
+    @NSManaged var photoNameOnDisc: String?
     @NSManaged var pin: Pin?
     
     // The standard Core Data init method.
@@ -25,7 +27,7 @@ class Photo: NSManagedObject {
     }
     
     // The two argument init method
-    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
+    init(dictionary: [String: AnyObject], context: NSManagedObjectContext) {
         
         // Get the entity associated with the "Pin" type.
         let entity =  NSEntityDescription.entityForName("Photo", inManagedObjectContext: context)!
@@ -35,16 +37,18 @@ class Photo: NSManagedObject {
         
         // Init the properties from the dictionary.
         photoPath = dictionary[Keys.PhotoPath] as? String
+        photoNameOnDisc = dictionary[Keys.PhotoNameOnDisc] as? String
+        
     }
 
     var photoImage: UIImage? {
         
         get {
-            return FlikrClient.Caches.imageCache.imageWithIdentifier(photoPath)
+            return FlikrClient.Caches.imageCache.imageWithIdentifier(photoNameOnDisc)
         }
         
         set {
-            FlikrClient.Caches.imageCache.storeImage(newValue, withIdentifier: photoPath!)
+            FlikrClient.Caches.imageCache.storeImage(newValue, withIdentifier: photoNameOnDisc!)
         }
     }
 

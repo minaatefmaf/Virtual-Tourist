@@ -53,7 +53,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        printTheContents()
         /* If numberOfAvailablePhotos is -ve: no previous attempt was made to download this pin's photos.
            If numberOfAvailablePhotos == 0: found no photos associated with this pin if the first attempt (with a successful internet connection) was made*/
         if thePin.numberOfAvailablePhotos < 0 {
@@ -116,8 +116,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                 
                 // Save the urls into the photos array associated with the pin
                 for url in arrayOfURLs {
+                    
+                    // Extract the last component of the url to be the file name on disc
+                    let fileNameOnDisc = NSURL(string: url)?.lastPathComponent
+                    
                     let dictionary: [String : AnyObject] = [
-                        Photo.Keys.PhotoPath: url
+                        Photo.Keys.PhotoPath: url,
+                        Photo.Keys.PhotoNameOnDisc: fileNameOnDisc!
                     ]
                     let photo = Photo(dictionary: dictionary, context: self.sharedContext)
                     photo.pin = self.thePin
@@ -390,5 +395,21 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         }
     }
 
-    
+    func printTheContents() {
+        print("********************")
+        
+        // We need just to get the documents folder url
+        let documentsUrl: NSURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        
+        // now lets get the directory contents (including folders)
+        do {
+            let directoryContents = try NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsUrl, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions())
+            print(directoryContents)
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        print("********************")
+    }
 }
