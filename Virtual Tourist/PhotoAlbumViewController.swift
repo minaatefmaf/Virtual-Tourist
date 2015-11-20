@@ -382,7 +382,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     func updateBottomButton() {
         if selectedIndexes.count > 0 {
-            bottomButton.setTitle("Remove Selected Colors", forState: UIControlState.Normal)
+            bottomButton.setTitle("Remove Selected Photos", forState: UIControlState.Normal)
         } else {
             bottomButton.setTitle("New Collection", forState: UIControlState.Normal)
         }

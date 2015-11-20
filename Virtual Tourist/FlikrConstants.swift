@@ -14,7 +14,7 @@ extension FlikrClient {
     struct Constants {
         
         // MARK: Flikr API key
-        static let API_KEY: String = "b5bd983bdb0a963a5953c60c3bb9ec70"
+        static let API_KEY: String = "ENTER_A_FLIKR_API_KEY"
         
         // MARK: URL
         static let BASE_URL_SECURE: String = "https://api.flickr.com/services/rest/"
