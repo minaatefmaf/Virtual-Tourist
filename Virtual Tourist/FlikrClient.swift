@@ -9,7 +9,13 @@
 import Foundation
 
 class FlikrClient: NSObject {
-        
+    
+    // Shared Instance
+    static let sharedInstance = FlikrClient()
+    
+    // Shared Image Cache
+    static let imageCache = ImageCache()
+    
     // Shared session
     var session: NSURLSession
     
@@ -143,23 +149,4 @@ class FlikrClient: NSObject {
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
-    
-    // MARK: - Shared Instance
-    
-    class func sharedInstance() -> FlikrClient {
-        
-        struct Singleton {
-            static var sharedInstance = FlikrClient()
-        }
-        
-        return Singleton.sharedInstance
-    }
-    
-    
-    // MARK: - Shared Image Cache
-    
-    struct Caches {
-        static let imageCache = ImageCache()
-    }
-
 }

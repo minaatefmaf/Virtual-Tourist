@@ -44,16 +44,16 @@ class Photo: NSManagedObject {
     var photoImage: UIImage? {
         
         get {
-            return FlikrClient.Caches.imageCache.imageWithIdentifier(photoNameOnDisc)
+            return FlikrClient.imageCache.imageWithIdentifier(photoNameOnDisc)
         }
         
         set {
-            FlikrClient.Caches.imageCache.storeImage(newValue, withIdentifier: photoNameOnDisc!)
+            FlikrClient.imageCache.storeImage(newValue, withIdentifier: photoNameOnDisc!)
         }
     }
 
     override func prepareForDeletion() {
-        FlikrClient.Caches.imageCache.deleteImage(withIdentifier: photoNameOnDisc!)
+        FlikrClient.imageCache.deleteImage(withIdentifier: photoNameOnDisc!)
     }
     
 }

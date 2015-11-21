@@ -174,7 +174,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Core Data Convenience.
     
     lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
+        return CoreDataStackManager.sharedInstance.managedObjectContext
     }()
     
     func fetchAllPins() -> [Pin] {
@@ -250,7 +250,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             sharedContext.deleteObject(pinToBeRemoved)
             
             // Save the context
-            CoreDataStackManager.sharedInstance().saveContext()
+            CoreDataStackManager.sharedInstance.saveContext()
         }
     }
     
@@ -359,7 +359,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             self.mapView.addAnnotation(annotation)
             
             // Save the context
-            CoreDataStackManager.sharedInstance().saveContext()
+            CoreDataStackManager.sharedInstance.saveContext()
             
             // Set longPressIsActive to true so only one annotation is added
             longPressIsActive = true
@@ -394,7 +394,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     func downloadThePhotos(newPin: Pin) {
         
         // Initiate the dowloading process
-        FlikrClient.sharedInstance().getThePhotosFromFlikr(newPin.latitude, longitude: newPin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
+        FlikrClient.sharedInstance.getThePhotosFromFlikr(newPin.latitude, longitude: newPin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
             
             if success {
                 
@@ -416,7 +416,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                     let photo = Photo(dictionary: dictionary, context: self.sharedContext)
                     photo.pin = newPin
                 }
-                CoreDataStackManager.sharedInstance().saveContext()
+                CoreDataStackManager.sharedInstance.saveContext()
                 
                 // Try to prefetch the photos for this pin
                 self.prefetchThePhotos(newPin)
@@ -432,7 +432,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         for photo in newPin.photos {
             
             // Start the task that will eventually download the image
-            FlikrClient.sharedInstance().taskForImage(photo.photoPath!) { imageData, error in
+            FlikrClient.sharedInstance.taskForImage(photo.photoPath!) { imageData, error in
                 
                 if let data = imageData {
                     // Create the image

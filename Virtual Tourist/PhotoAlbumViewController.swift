@@ -108,7 +108,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         self.bottomButton.enabled = false
         
         // Initiate the dowloading process
-        FlikrClient.sharedInstance().getThePhotosFromFlikr(thePin.latitude, longitude: thePin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
+        FlikrClient.sharedInstance.getThePhotosFromFlikr(thePin.latitude, longitude: thePin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
             
             if success {
                 
@@ -130,7 +130,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                     let photo = Photo(dictionary: dictionary, context: self.sharedContext)
                     photo.pin = self.thePin
                 }
-                CoreDataStackManager.sharedInstance().saveContext()
+                CoreDataStackManager.sharedInstance.saveContext()
                 
                 dispatch_async(dispatch_get_main_queue()) {
                     // Enable the bottom button
@@ -229,7 +229,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             cell.activityIndicator.startAnimating()
             
             // Start the task that will eventually download the image
-            let task = FlikrClient.sharedInstance().taskForImage(photo.photoPath!) { imageData, error in
+            let task = FlikrClient.sharedInstance.taskForImage(photo.photoPath!) { imageData, error in
                 
                 if let _ = error {
                     //print("Image download error: \(error.localizedDescription)")
@@ -265,7 +265,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     // MARK: - Core Data Convenience.
     
     lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
+        return CoreDataStackManager.sharedInstance.managedObjectContext
     }()
     
     
@@ -318,8 +318,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             break
         case .Move:
             // Do nothing
-            break
-        default:
             break
         }
     }
@@ -393,7 +391,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             sharedContext.deleteObject(photo)
         }
         
-        CoreDataStackManager.sharedInstance().saveContext()
+        CoreDataStackManager.sharedInstance.saveContext()
         
         selectedIndexes = [NSIndexPath]()
     }
