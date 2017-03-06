@@ -43,13 +43,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         
         // Perform the fetch
         do {
-            try fetchedResultsController.performFetch()
+            try fetchedResultsController?.performFetch()
         } catch let error as NSError {
             print("Error performing initial fetch: \(error)")
         }
         
         //Set the delegate to this view controller
-        fetchedResultsController.delegate = self
+        fetchedResultsController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -167,17 +167,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     // MARK: - UICollectionView
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.fetchedResultsController.sections?.count ?? 0
+        return self.fetchedResultsController!.sections?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section]
-        return sectionInfo.numberOfObjects
+        let sectionInfo = self.fetchedResultsController?.sections![section]
+        return sectionInfo!.numberOfObjects
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let photo = fetchedResultsController.object(at: indexPath) as! Photo
+        let photo = fetchedResultsController?.object(at: indexPath) as! Photo
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
@@ -271,7 +271,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // Mark: - Fetched Results Controller
     
-    lazy var fetchedResultsController: NSFetchedResultsController = { () -> <<error type>> in 
+    lazy var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = { () -> NSFetchedResultsController<NSFetchRequestResult>? in 
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetchRequest.sortDescriptors = []
@@ -370,7 +370,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         } else {
             
             // Delete all the photos
-            for photo in fetchedResultsController.fetchedObjects as! [Photo] {
+            for photo in fetchedResultsController?.fetchedObjects as! [Photo] {
                 sharedContext.delete(photo)
             }
             
@@ -384,7 +384,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         var photosToDelete = [Photo]()
         
         for indexPath in selectedIndexes {
-            photosToDelete.append(fetchedResultsController.object(at: indexPath) as! Photo)
+            photosToDelete.append(fetchedResultsController?.object(at: indexPath) as! Photo)
         }
         
         for photo in photosToDelete {
