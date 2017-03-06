@@ -34,17 +34,17 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
         // Add the right bar buttons
         if instantaneouslyDownloadingFeature == false {
-            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TravelLocationsMapViewController.editPins))
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .plain, target: self, action: #selector(TravelLocationsMapViewController.toggleTheInstantaneouslyDownloadingFeature))
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
         } else {
-            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TravelLocationsMapViewController.editPins))
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .plain, target: self, action: #selector(TravelLocationsMapViewController.toggleTheInstantaneouslyDownloadingFeature))
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
         }
 
         // Configure tap recognizer
-        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "handleSingleLongPress:")
+        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(TravelLocationsMapViewController.handleSingleLongPress(_:)))
         longPressRecognizer?.minimumPressDuration = 0.5
         
         // Restore the last saved region
@@ -60,14 +60,14 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         addAnotationRecognizer()
         
         // Remove the previous selected annotaion so it can be reselected
         self.mapView.selectedAnnotations.removeAll()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         removeAnotationRecognizer()
     }
 
@@ -76,13 +76,13 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         editMode = true
         
         // Animate rising up the botton view
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.mapView.frame.origin.y -= self.bottomView.frame.height
             self.bottomView.frame.origin.y -= self.bottomView.frame.height
         })
         // Change the right bar button to "Done" mode
-        let doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneEditingPins")
-        self.navigationItem.setRightBarButtonItem(doneButton, animated: true)
+        let doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(TravelLocationsMapViewController.doneEditingPins))
+        self.navigationItem.setRightBarButton(doneButton, animated: true)
         
     }
     
@@ -96,8 +96,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             saveToggleState(instantaneouslyDownloadingFeature)
             
             // Change the right bar buttons
-            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TravelLocationsMapViewController.editPins))
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "Ins.->N/A", style: .plain, target: self, action: #selector(TravelLocationsMapViewController.toggleTheInstantaneouslyDownloadingFeature))
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
       
             // Let the user know that that means
@@ -111,8 +111,8 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             saveToggleState(instantaneouslyDownloadingFeature)
             
             // Change the right bar buttons
-            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .Plain, target: self, action: "toggleTheInstantaneouslyDownloadingFeature")
+            let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TravelLocationsMapViewController.editPins))
+            let toggleButton: UIBarButtonItem = UIBarButtonItem(title: "N/A->Ins.", style: .plain, target: self, action: #selector(TravelLocationsMapViewController.toggleTheInstantaneouslyDownloadingFeature))
             self.navigationItem.setRightBarButtonItems([editButton, toggleButton], animated: true)
             
             // Let the user know that that means
@@ -126,13 +126,13 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         editMode = false
         
         // Animate falling down the botton view
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.mapView.frame.origin.y += self.bottomView.frame.height
             self.bottomView.frame.origin.y += self.bottomView.frame.height
         })
         // Change the right bar button to "Edit" mode again
-        let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editPins")
-        self.navigationItem.setRightBarButtonItem(editButton, animated: true)
+        let editButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(TravelLocationsMapViewController.editPins))
+        self.navigationItem.setRightBarButton(editButton, animated: true)
     }
     
     func annotateMapWithPreviouslySavedPins() {
@@ -152,7 +152,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             annotations.append(annotation)
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             // Add the annotations to the map.
             self.mapView.addAnnotations(annotations)
         }
@@ -160,7 +160,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     // Search for a specific pin inside an array of pins
-    func searchForPin(arrayOfPins: [Pin], coordinate: CLLocationCoordinate2D) -> Pin? {
+    func searchForPin(_ arrayOfPins: [Pin], coordinate: CLLocationCoordinate2D) -> Pin? {
         for pin in arrayOfPins {
             if pin.latitude == coordinate.latitude {
                 if pin.longitude == coordinate.longitude {
@@ -179,11 +179,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     func fetchAllPins() -> [Pin] {
         // Create the Fetch Request
-        let fetchRequest = NSFetchRequest(entityName: "Pin")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
         
         // Execute the Fetch Request
         do {
-            return try sharedContext.executeFetchRequest(fetchRequest) as! [Pin]
+            return try sharedContext.fetch(fetchRequest) as! [Pin]
         } catch _ {
             return [Pin]()
         }
@@ -192,11 +192,11 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - MKMapViewDelegate
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
         
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -210,7 +210,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         return pinView
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         // Navigate to the Photo Album View if in normal mode
         if !editMode {
             
@@ -224,7 +224,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                 // Remove the previous selected annotaion so it can be reselected
                 self.mapView.selectedAnnotations.removeAll()
             } else {
-                let photoAlbumController = self.storyboard!.instantiateViewControllerWithIdentifier("PhotoAlbumViewController") as! PhotoAlbumViewController
+                let photoAlbumController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
                 
                 // Get the pin to be loaded
                 photoAlbumController.thePin = thePin
@@ -247,14 +247,14 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
             let pinToBeRemoved = searchForPin(pins, coordinate: annotationToBeRemoved.coordinate)!
 
             // Remove the pin from the context
-            sharedContext.deleteObject(pinToBeRemoved)
+            sharedContext.delete(pinToBeRemoved)
             
             // Save the context
             CoreDataStackManager.sharedInstance.saveContext()
         }
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         // Save the current region
         saveMapRegion()
     }
@@ -263,9 +263,9 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // A convenient property
     var mapFilePath: String {
-        let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        return url.URLByAppendingPathComponent("mapRegionArchive").path!
+        let manager = FileManager.default
+        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first! as URL
+        return url.appendingPathComponent("mapRegionArchive").path
     }
 
     func saveMapRegion() {
@@ -282,7 +282,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func restoreMapRegion() {
-        if let regionDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(mapFilePath) as? [String : AnyObject] {
+        if let regionDictionary = NSKeyedUnarchiver.unarchiveObject(withFile: mapFilePath) as? [String : AnyObject] {
             // Restore the center
             let longitude = regionDictionary["longitude"] as! CLLocationDegrees
             let latitude = regionDictionary["latitude"] as! CLLocationDegrees
@@ -304,12 +304,12 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
 
     // A convenient property
     var toggleFilePath: String {
-        let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        return url.URLByAppendingPathComponent("toggleStateArchive").path!
+        let manager = FileManager.default
+        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first! as URL
+        return url.appendingPathComponent("toggleStateArchive").path
     }
     
-    func saveToggleState(toggleState: Bool) {
+    func saveToggleState(_ toggleState: Bool) {
         // Place the toggle state into a dictionary
         let dictionary = [
             "toggleState": toggleState
@@ -320,7 +320,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func restoreToggleState() {
-        if let toggleStateDictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(toggleFilePath) as? [String : AnyObject] {
+        if let toggleStateDictionary = NSKeyedUnarchiver.unarchiveObject(withFile: toggleFilePath) as? [String : AnyObject] {
             instantaneouslyDownloadingFeature = toggleStateDictionary["toggleState"] as! Bool
         }
     }
@@ -335,16 +335,16 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         view.removeGestureRecognizer(longPressRecognizer!)
     }
     
-    func handleSingleLongPress(recognizer: UITapGestureRecognizer) {
+    func handleSingleLongPress(_ recognizer: UITapGestureRecognizer) {
         if editMode {
             // Do nothing here
         } else if !longPressIsActive {
-            let tapPostion = recognizer.locationInView(mapView)
-            let coordinate = self.mapView.convertPoint(tapPostion, toCoordinateFromView: self.mapView)
+            let tapPostion = recognizer.location(in: mapView)
+            let coordinate = self.mapView.convert(tapPostion, toCoordinateFrom: self.mapView)
             
             let dictionary: [String : AnyObject] = [
-                Pin.Keys.Latitude: coordinate.latitude,
-                Pin.Keys.Longitude: coordinate.longitude
+                Pin.Keys.Latitude: coordinate.latitude as AnyObject,
+                Pin.Keys.Longitude: coordinate.longitude as AnyObject
             ]
             
             // Create a pin in the shared context
@@ -372,7 +372,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         }
         
         // Set longPressIsActive to false after the continuous gesture touch is ended
-        if (recognizer.state == .Ended) {
+        if (recognizer.state == .ended) {
             longPressIsActive = false
         }
         
@@ -380,18 +380,18 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
     
     // Mark: - Helper functions
     
-    func displayMessage(messageString: String) {
+    func displayMessage(_ messageString: String) {
         // Prepare the Alert view controller with the error message to display
-        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .Alert)
-        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(dismissAction)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             // Display the Alert view controller
-            self.presentViewController (alert, animated: true, completion: nil)
+            self.present (alert, animated: true, completion: nil)
         })
     }
     
-    func downloadThePhotos(newPin: Pin) {
+    func downloadThePhotos(_ newPin: Pin) {
         
         // Initiate the dowloading process
         FlikrClient.sharedInstance.getThePhotosFromFlikr(newPin.latitude, longitude: newPin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
@@ -407,7 +407,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
                 for url in arrayOfURLs {
                     
                     // Extract the last component of the url to be the file name on disc
-                    let fileNameOnDisc = NSURL(string: url)?.lastPathComponent
+                    let fileNameOnDisc = URL(string: url)?.lastPathComponent
                     
                     let dictionary: [String : AnyObject] = [
                         Photo.Keys.PhotoPath: url,
@@ -427,7 +427,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         
     }
     
-    func prefetchThePhotos(newPin: Pin) {
+    func prefetchThePhotos(_ newPin: Pin) {
         
         for photo in newPin.photos {
             

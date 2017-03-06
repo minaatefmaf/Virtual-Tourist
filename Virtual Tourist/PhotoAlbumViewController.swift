@@ -22,12 +22,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     var thePin: Pin!
     
     // The selected indexes array keeps all of the indexPaths for cells that are "selected".
-    var selectedIndexes = [NSIndexPath]()
+    var selectedIndexes = [IndexPath]()
     
     // Keep the changes; keep track of insertions, deletions, and updates.
-    var insertedIndexPaths: [NSIndexPath]!
-    var deletedIndexPaths: [NSIndexPath]!
-    var updatedIndexPaths: [NSIndexPath]!
+    var insertedIndexPaths: [IndexPath]!
+    var deletedIndexPaths: [IndexPath]!
+    var updatedIndexPaths: [IndexPath]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         fetchedResultsController.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         /* If numberOfAvailablePhotos is -ve: no previous attempt was made to download this pin's photos.
@@ -60,7 +60,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         if thePin.numberOfAvailablePhotos < 0 {
             downloadThePhotos()
         } else if thePin.numberOfAvailablePhotos == 0 {
-            noPinsLabel.hidden = false
+            noPinsLabel.isHidden = false
         }
     }
     
@@ -95,17 +95,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         
     func configureUI() {
         // Prepare the map view
-        mapView.scrollEnabled = false
-        mapView.zoomEnabled = false
+        mapView.isScrollEnabled = false
+        mapView.isZoomEnabled = false
         
         // Hide the noPinsLabel
-        noPinsLabel.hidden = true
+        noPinsLabel.isHidden = true
     }
     
     func downloadThePhotos() {
         
         // Disable the bottom button
-        self.bottomButton.enabled = false
+        self.bottomButton.isEnabled = false
         
         // Initiate the dowloading process
         FlikrClient.sharedInstance.getThePhotosFromFlikr(thePin.latitude, longitude: thePin.longitude) { success, numberOfAvailablePhotos, arrayOfURLs, errorString in
@@ -121,7 +121,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                 for url in arrayOfURLs {
                     
                     // Extract the last component of the url to be the file name on disc
-                    let fileNameOnDisc = NSURL(string: url)?.lastPathComponent
+                    let fileNameOnDisc = URL(string: url)?.lastPathComponent
                     
                     let dictionary: [String : AnyObject] = [
                         Photo.Keys.PhotoPath: url,
@@ -132,13 +132,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                 }
                 CoreDataStackManager.sharedInstance.saveContext()
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     // Enable the bottom button
-                    self.bottomButton.enabled = true
+                    self.bottomButton.isEnabled = true
                     
                     // Display the noPinsLabel if this pin has no photos available
                     if numberOfAvailablePhotos == 0 {
-                        self.noPinsLabel.hidden = false
+                        self.noPinsLabel.isHidden = false
                     }
                 }
                 
@@ -150,15 +150,15 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         }
     }
     
-    func displayError(errorString: String?) {
+    func displayError(_ errorString: String?) {
         if let errorString = errorString {
             // Prepare the Alert view controller with the error message to display
-            let alert = UIAlertController(title: "", message: errorString, preferredStyle: .Alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+            let alert = UIAlertController(title: "", message: errorString, preferredStyle: .alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil)
             alert.addAction(dismissAction)
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 // Display the Alert view controller
-                self.presentViewController (alert, animated: true, completion: nil)
+                self.present (alert, animated: true, completion: nil)
             })
         }
     }
@@ -166,25 +166,25 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // MARK: - UICollectionView
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
+        let photo = fetchedResultsController.object(at: indexPath) as! Photo
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
         self.configureCell(cell, photo: photo)
         
         // Darken the cell a little to highlight its selected state.
-        if let _ = selectedIndexes.indexOf(indexPath) {
+        if let _ = selectedIndexes.index(of: indexPath) {
             cell.photoImageView!.alpha = 0.25
         } else {
             cell.photoImageView!.alpha = 1.0
@@ -193,18 +193,18 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         return cell
     }
 
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // Whenever a cell is tapped we will toggle its presence in the selectedIndexes array
-        if let index = selectedIndexes.indexOf(indexPath) {
-            selectedIndexes.removeAtIndex(index)
+        if let index = selectedIndexes.index(of: indexPath) {
+            selectedIndexes.remove(at: index)
         } else {
             selectedIndexes.append(indexPath)
         }
         
         // Reload the selected cell to reflect the action of selecting it
         UIView.performWithoutAnimation({
-            collectionView.reloadItemsAtIndexPaths([indexPath])
+            collectionView.reloadItems(at: [indexPath])
         })
         
         // And update the buttom button
@@ -213,7 +213,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // MARK: - Configure Cell
     
-    func configureCell(cell: PhotoCell, photo: Photo) {
+    func configureCell(_ cell: PhotoCell, photo: Photo) {
         
         var imageForPhoto = UIImage(named: "photoPlaceholder")
         
@@ -245,7 +245,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                         photo.photoImage = image
                         
                         // Update the cell later, on the main thread
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             cell.activityIndicator.stopAnimating()
                             cell.photoImageView!.image = image
                         }
@@ -271,9 +271,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // Mark: - Fetched Results Controller
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
+    lazy var fetchedResultsController: NSFetchedResultsController = { () -> <<error type>> in 
         
-        let fetchRequest = NSFetchRequest(entityName: "Photo")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "pin == %@", self.thePin);
         
@@ -291,52 +291,52 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // Whenever changes are made to Core Data the following three methods are invoked. This first method is used to create
     // three fresh arrays to record the index paths that will be changed.
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         // We are about to handle some new changes. Start out with empty arrays for each change type
-        insertedIndexPaths = [NSIndexPath]()
-        deletedIndexPaths = [NSIndexPath]()
-        updatedIndexPaths = [NSIndexPath]()
+        insertedIndexPaths = [IndexPath]()
+        deletedIndexPaths = [IndexPath]()
+        updatedIndexPaths = [IndexPath]()
     }
     
     // The second method may be called multiple times, once for each Photo object that is added, deleted, or changed.
     // We store the index paths into the three arrays.
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         switch type{
             
-        case .Insert:
+        case .insert:
             /* Here we are noting that a new Photo instance has been added to Core Data. We remember its index path so that we can add a cell in "controllerDidChangeContent". Note that the "newIndexPath" parameter has the index path that we want in this case. */
             insertedIndexPaths.append(newIndexPath!)
             break
-        case .Delete:
+        case .delete:
             /* Here we are noting that a Photo instance has been deleted from Core Data. We keep remember its index path so that we can remove the corresponding cell in "controllerDidChangeContent". The "indexPath" parameter has value that we want in this case. */
             deletedIndexPaths.append(indexPath!)
             break
-        case .Update:
+        case .update:
             // Use this to update the photos when downloaded.
             updatedIndexPaths.append(indexPath!)
             break
-        case .Move:
+        case .move:
             // Do nothing
             break
         }
     }
     
     /* This method is invoked after all of the changed in the current batch have been collected into the three index path arrays (insert, delete, and upate). We now need to loop through the arrays and perform the changes. */
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
         collectionView.performBatchUpdates({() -> Void in
             
             for indexPath in self.insertedIndexPaths {
-                self.collectionView.insertItemsAtIndexPaths([indexPath])
+                self.collectionView.insertItems(at: [indexPath])
             }
             
             for indexPath in self.deletedIndexPaths {
-                self.collectionView.deleteItemsAtIndexPaths([indexPath])
+                self.collectionView.deleteItems(at: [indexPath])
             }
             
             for indexPath in self.updatedIndexPaths {
-                self.collectionView.reloadItemsAtIndexPaths([indexPath])
+                self.collectionView.reloadItems(at: [indexPath])
             }
             
             }, completion: nil)
@@ -346,7 +346,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
     
     // MARK: - Helper functions
     
-    @IBAction func clickTheBottomButton(sender: UIButton) {
+    @IBAction func clickTheBottomButton(_ sender: UIButton) {
         
         if selectedIndexes.isEmpty {
             reloadOtherPhotos()
@@ -371,7 +371,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
             
             // Delete all the photos
             for photo in fetchedResultsController.fetchedObjects as! [Photo] {
-                sharedContext.deleteObject(photo)
+                sharedContext.delete(photo)
             }
             
             // Download another set of photos
@@ -384,34 +384,34 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
         var photosToDelete = [Photo]()
         
         for indexPath in selectedIndexes {
-            photosToDelete.append(fetchedResultsController.objectAtIndexPath(indexPath) as! Photo)
+            photosToDelete.append(fetchedResultsController.object(at: indexPath) as! Photo)
         }
         
         for photo in photosToDelete {
-            sharedContext.deleteObject(photo)
+            sharedContext.delete(photo)
         }
         
         CoreDataStackManager.sharedInstance.saveContext()
         
-        selectedIndexes = [NSIndexPath]()
+        selectedIndexes = [IndexPath]()
     }
     
     func updateBottomButton() {
         if selectedIndexes.count > 0 {
-            bottomButton.setTitle("Remove Selected Photos", forState: UIControlState.Normal)
+            bottomButton.setTitle("Remove Selected Photos", for: UIControlState())
         } else {
-            bottomButton.setTitle("New Collection", forState: UIControlState.Normal)
+            bottomButton.setTitle("New Collection", for: UIControlState())
         }
     }
     
-    func displayMessage(messageString: String) {
+    func displayMessage(_ messageString: String) {
         // Prepare the Alert view controller with the error message to display
-        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .Alert)
-        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+        let alert = UIAlertController(title: "", message: messageString, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil)
         alert.addAction(dismissAction)
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             // Display the Alert view controller
-            self.presentViewController (alert, animated: true, completion: nil)
+            self.present (alert, animated: true, completion: nil)
         })
     }
 

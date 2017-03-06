@@ -282,15 +282,18 @@
 					2E2388741BF3B0E900ED23A6 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = BW6UP5H27S;
+						LastSwiftMigration = 0820;
 					};
 					2E2388881BF3B0E900ED23A6 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = BW6UP5H27S;
+						LastSwiftMigration = 0820;
 						TestTargetID = 2E2388741BF3B0E900ED23A6;
 					};
 					2E2388931BF3B0E900ED23A6 = {
 						CreatedOnToolsVersion = 7.1.1;
 						DevelopmentTeam = BW6UP5H27S;
+						LastSwiftMigration = 0820;
 						TestTargetID = 2E2388741BF3B0E900ED23A6;
 					};
 				};
@@ -507,6 +510,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Virtual Tourist/Virtual Tourist-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -520,6 +524,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minaatefmaf.Virtual-Tourist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Virtual Tourist/Virtual Tourist-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -531,6 +536,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minaatefmaf.Virtual-TouristTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Virtual Tourist.app/Virtual Tourist";
 			};
 			name = Debug;
@@ -543,6 +549,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minaatefmaf.Virtual-TouristTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Virtual Tourist.app/Virtual Tourist";
 			};
 			name = Release;
@@ -554,6 +561,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minaatefmaf.Virtual-TouristUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "Virtual Tourist";
 				USES_XCTRUNNER = YES;
 			};
@@ -566,6 +574,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.minaatefmaf.Virtual-TouristUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "Virtual Tourist";
 				USES_XCTRUNNER = YES;
 			};

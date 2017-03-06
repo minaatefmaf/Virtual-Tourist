@@ -23,18 +23,18 @@ class Pin: NSManagedObject{
     @NSManaged var photos: [Photo]
     
     // The standard Core Data init method.
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     // The two argument init method
     init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
         
         // Get the entity associated with the "Pin" type.
-        let entity =  NSEntityDescription.entityForName("Pin", inManagedObjectContext: context)!
+        let entity =  NSEntityDescription.entity(forEntityName: "Pin", in: context)!
         
         // Call an init method that we have inherited from NSManagedObject.
-        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        super.init(entity: entity,insertInto: context)
         
         // Init the properties from the dictionary.
         latitude = dictionary[Keys.Latitude] as! Double

@@ -12,9 +12,9 @@ import Foundation
 
 extension FlikrClient {
     
-    typealias CompletionHander = (success: Bool, numberOfAvailablePhotos: Int?, arrayOfURLs: [String], errorString: String?) -> Void
+    typealias CompletionHander = (_ success: Bool, _ numberOfAvailablePhotos: Int?, _ arrayOfURLs: [String], _ errorString: String?) -> Void
     
-    func getThePhotosFromFlikr(latitude: Double, longitude: Double, completionHandler: CompletionHander) {
+    func getThePhotosFromFlikr(_ latitude: Double, longitude: Double, completionHandler: @escaping CompletionHander) {
         
         // Specify parameters, methods
         let methodArguments = [
@@ -34,7 +34,7 @@ extension FlikrClient {
         taskForResource(methodArguments) { JSONResult, error in
            
             // GUARD: Did Flickr return an error?
-            guard let stat = JSONResult["stat"] as? String where stat == "ok" else {
+            guard let stat = JSONResult["stat"] as? String, stat == "ok" else {
                 let errorString = "Flickr API returned an error. See error code and message in \(JSONResult)"
                 completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
                 print("Flickr API returned an error. See error code and message in \(JSONResult)")
@@ -64,11 +64,11 @@ extension FlikrClient {
         }
     }
     
-    func getImageFromFlickrBySearchWithPage(methodArguments: [String : AnyObject], pageNumber: Int, completionHandler: CompletionHander) {
+    func getImageFromFlickrBySearchWithPage(_ methodArguments: [String : AnyObject], pageNumber: Int, completionHandler: @escaping CompletionHander) {
        
         // Add the page to the method's arguments
         var withPageDictionary = methodArguments
-        withPageDictionary["page"] = pageNumber
+        withPageDictionary["page"] = pageNumber as AnyObject?
         
         // The photos urls
         var arrayOfURLs = [String]()
@@ -82,7 +82,7 @@ extension FlikrClient {
             }
             
             // GUARD: Did Flickr return an error (stat != ok)?
-            guard let stat = JSONResult["stat"] as? String where stat == "ok" else {
+            guard let stat = JSONResult["stat"] as? String, stat == "ok" else {
                 let errorString = "Flickr API returned an error. See error code and message in \(JSONResult)"
                 completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
                 print("Flickr API returned an error. See error code and message in \(JSONResult)")
@@ -135,7 +135,7 @@ extension FlikrClient {
     
     // Mark: Helper methods for filtering the urls we need
     
-    func getAllPhotosWeHave(photosArray: [[String : AnyObject]]) -> [String] {
+    func getAllPhotosWeHave(_ photosArray: [[String : AnyObject]]) -> [String] {
         
         var arrayOfURLs = [String]()
         
@@ -155,7 +155,7 @@ extension FlikrClient {
         return arrayOfURLs
     }
     
-    func getRandom21Photos(photosArray: [[String : AnyObject]]) -> [String] {
+    func getRandom21Photos(_ photosArray: [[String : AnyObject]]) -> [String] {
         
         var arrayOfURLs = [String]()
         
@@ -183,7 +183,7 @@ extension FlikrClient {
     
     // MARK: Lat/Lon Manipulation
     
-    func createBoundingBoxString(latitude: Double, longitude: Double) -> String {
+    func createBoundingBoxString(_ latitude: Double, longitude: Double) -> String {
         
         /* Fix added to ensure box is bounded by minimum and maximums */
         let bottom_left_lon = max(longitude - BoundingBox.BOUNDING_BOX_HALF_WIDTH, BoundingBox.LON_MIN)
@@ -194,7 +194,7 @@ extension FlikrClient {
         return "\(bottom_left_lon),\(bottom_left_lat),\(top_right_lon),\(top_right_lat)"
     }
     
-    func getLatLonString(latitude: Double, longitude: Double) -> String {
+    func getLatLonString(_ latitude: Double, longitude: Double) -> String {
         return "(\(latitude), \(longitude))"
     }
     
