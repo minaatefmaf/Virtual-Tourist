@@ -111,7 +111,7 @@ class FlikrClient: NSObject {
         
         let parsedResult: AnyObject?
         do {
-            parsedResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
+            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
         } catch let error as NSError {
             parsingError = error
             parsedResult = nil

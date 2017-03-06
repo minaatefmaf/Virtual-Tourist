@@ -124,8 +124,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, UICollectio
                     let fileNameOnDisc = URL(string: url)?.lastPathComponent
                     
                     let dictionary: [String : AnyObject] = [
-                        Photo.Keys.PhotoPath: url,
-                        Photo.Keys.PhotoNameOnDisc: fileNameOnDisc!
+                        Photo.Keys.PhotoPath: url as AnyObject,
+                        Photo.Keys.PhotoNameOnDisc: fileNameOnDisc! as AnyObject
                     ]
                     let photo = Photo(dictionary: dictionary, context: self.sharedContext)
                     photo.pin = self.thePin

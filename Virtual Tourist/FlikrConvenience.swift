@@ -31,20 +31,20 @@ extension FlikrClient {
         let arrayOfURLs = [String]()
         
         // Make the request
-        taskForResource(methodArguments) { JSONResult, error in
+        taskForResource(methodArguments as [String : AnyObject]) { JSONResult, error in
            
             // GUARD: Did Flickr return an error?
-            guard let stat = JSONResult["stat"] as? String, stat == "ok" else {
+            guard let stat = JSONResult?["stat"] as? String, stat == "ok" else {
                 let errorString = "Flickr API returned an error. See error code and message in \(JSONResult)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Flickr API returned an error. See error code and message in \(JSONResult)")
                 return
             }
             
             // GUARD: Is "photos" key in our result?
-            guard let photosDictionary = JSONResult["photos"] as? NSDictionary else {
+            guard let photosDictionary = JSONResult?["photos"] as? NSDictionary else {
                 let errorString = "Cannot find keys 'photos' in \(JSONResult)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Cannot find keys 'photos' in \(JSONResult)")
                 return
             }
@@ -52,7 +52,7 @@ extension FlikrClient {
             // GUARD: Is "pages" key in the photosDictionary?
             guard let totalPages = photosDictionary["pages"] as? Int else {
                 let errorString = "Cannot find key 'pages' in \(photosDictionary)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Cannot find key 'pages' in \(photosDictionary)")
                 return
             }
@@ -60,7 +60,7 @@ extension FlikrClient {
             // Pick a random page!
             let pageLimit = min(totalPages, 40)
             let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-            self.getImageFromFlickrBySearchWithPage(methodArguments, pageNumber: randomPage, completionHandler: completionHandler)
+            self.getImageFromFlickrBySearchWithPage(methodArguments as [String : AnyObject], pageNumber: randomPage, completionHandler: completionHandler)
         }
     }
     
@@ -77,22 +77,22 @@ extension FlikrClient {
         taskForResource(methodArguments) { JSONResult, error in
             
             if let error = error {
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: error.localizedDescription)
+                completionHandler(false, nil, arrayOfURLs, error.localizedDescription)
                 return
             }
             
             // GUARD: Did Flickr return an error (stat != ok)?
-            guard let stat = JSONResult["stat"] as? String, stat == "ok" else {
+            guard let stat = JSONResult?["stat"] as? String, stat == "ok" else {
                 let errorString = "Flickr API returned an error. See error code and message in \(JSONResult)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Flickr API returned an error. See error code and message in \(JSONResult)")
                 return
             }
             
             // GUARD: Is the "photos" key in our result?
-            guard let photosDictionary = JSONResult["photos"] as? NSDictionary else {
+            guard let photosDictionary = JSONResult?["photos"] as? NSDictionary else {
                 let errorString = "Cannot find key 'photos' in \(JSONResult)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Cannot find key 'photos' in \(JSONResult)")
                 return
             }
@@ -100,7 +100,7 @@ extension FlikrClient {
             // GUARD: Is the "total" key in photosDictionary?
             guard let totalPhotosVal = (photosDictionary["total"] as? NSString)?.integerValue else {
                 let errorString = "Cannot find key 'total' in \(photosDictionary)"
-                completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                completionHandler(false, nil, arrayOfURLs, errorString)
                 print("Cannot find key 'total' in \(photosDictionary)")
                 return
             }
@@ -110,22 +110,22 @@ extension FlikrClient {
                 // GUARD: Is the "photo" key in photosDictionary?
                 guard let photosArray = photosDictionary["photo"] as? [[String: AnyObject]] else {
                     let errorString = "Cannot find key 'photo' in \(photosDictionary)"
-                    completionHandler(success: false, numberOfAvailablePhotos: nil, arrayOfURLs: arrayOfURLs, errorString: errorString)
+                    completionHandler(false, nil, arrayOfURLs, errorString)
                     print("Cannot find key 'photo' in \(photosDictionary)")
                     return
                 }
                 
                 if totalPhotosVal <= 21 {
                     arrayOfURLs = self.getAllPhotosWeHave(photosArray)
-                    completionHandler(success: true, numberOfAvailablePhotos: totalPhotosVal, arrayOfURLs: arrayOfURLs, errorString: nil)
+                    completionHandler(true, totalPhotosVal, arrayOfURLs, nil)
                 } else {
                     arrayOfURLs = self.getRandom21Photos(photosArray)
-                    completionHandler(success: true, numberOfAvailablePhotos: totalPhotosVal, arrayOfURLs: arrayOfURLs, errorString: nil)
+                    completionHandler(true, totalPhotosVal, arrayOfURLs, nil)
                 }
                 
             } else {
                 // Return "Pin has no photos"
-                completionHandler(success: true, numberOfAvailablePhotos: 0, arrayOfURLs: arrayOfURLs, errorString: nil)
+                completionHandler(true, 0, arrayOfURLs, nil)
             }
             
         }
