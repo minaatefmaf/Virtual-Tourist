@@ -31,7 +31,7 @@ extension FlikrClient {
         let arrayOfURLs = [String]()
         
         // Make the request
-        taskForResource(methodArguments as [String : AnyObject]) { JSONResult, error in
+        let _ = taskForResource(methodArguments as [String : AnyObject]) { JSONResult, error in
            
             // GUARD: Did Flickr return an error?
             guard let stat = JSONResult?["stat"] as? String, stat == "ok" else {
@@ -74,7 +74,7 @@ extension FlikrClient {
         var arrayOfURLs = [String]()
         
         // Make the request
-        taskForResource(methodArguments) { JSONResult, error in
+        let _ = taskForResource(methodArguments) { JSONResult, error in
             
             if let error = error {
                 completionHandler(false, nil, arrayOfURLs, error.localizedDescription)

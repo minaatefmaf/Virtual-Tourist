@@ -432,7 +432,7 @@ class TravelLocationsMapViewController: UIViewController, MKMapViewDelegate {
         for photo in newPin.photos {
             
             // Start the task that will eventually download the image
-            FlikrClient.sharedInstance.taskForImage(photo.photoPath!) { imageData, error in
+            let _ = FlikrClient.sharedInstance.taskForImage(photo.photoPath!) { imageData, error in
                 
                 if let data = imageData {
                     // Create the image
