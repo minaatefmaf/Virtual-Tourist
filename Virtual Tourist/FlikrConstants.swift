@@ -16,6 +16,7 @@ extension FlikrClient {
         // MARK: Flikr API key
         static let API_KEY: String = "ENTER_A_FLIKR_API_KEY"
         
+
         // MARK: URL
         static let BASE_URL_SECURE: String = "https://api.flickr.com/services/rest/"
         
